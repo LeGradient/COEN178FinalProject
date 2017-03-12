@@ -18,6 +18,8 @@ CREATE TABLE Employee (
 
 
 CREATE TABLE LeaseAgreement (
+    lease_id INTEGER PRIMARY KEY,
+    rental_id INTEGER REFERENCES Property(rental_id),
     renter_name VARCHAR(30),
     phone_work VARCHAR(12),
     phone_home VARCHAR(12),
