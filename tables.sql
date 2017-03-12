@@ -7,7 +7,7 @@ CREATE TABLE Branch (
 );
 
 
-CREATE TABLE Employees (
+CREATE TABLE Employee (
     emp_id INTEGER PRIMARY KEY,
     branch_id INTEGER REFERENCES Branch(branch_id),
     name VARCHAR(30),
