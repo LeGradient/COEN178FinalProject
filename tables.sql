@@ -35,7 +35,7 @@ CREATE TABLE LeaseAgreement (
     date_end DATE,
     monthly_rent NUMBER(6,2),
     deposit NUMBER(6,2),
-    emp_id INTEGER REFERENCES Employees(emp_id)
+    emp_id INTEGER REFERENCES Employee(emp_id)
 );
 
 
