@@ -73,7 +73,7 @@ CREATE OR REPLACE PROCEDURE list_rentals_by_owner(arg_owner IN INTEGER) AS
 BEGIN
     SELECT name
     INTO var_ownername
-    FROM Owners
+    FROM Owner
     WHERE owner_id = arg_owner;
 
     dbms_output.put_line('Properties owned by ' || var_ownername);
