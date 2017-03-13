@@ -56,6 +56,6 @@ CREATE TABLE LeaseAgreement (
     friend_phone VARCHAR(12),
     date_start DATE,
     date_end DATE,
-    monthly_rent NUMBER(6,2),
+    rent NUMBER(6,2),
     deposit NUMBER(6,2)
 );
