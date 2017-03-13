@@ -42,6 +42,7 @@ CREATE OR REPLACE PROCEDURE list_supervisors AS
         SELECT
             Property.supervisor_id,
             Employee.name,
+            Property.rental_id,
             Property.street,
             Property.city,
             Property.zip
@@ -53,6 +54,7 @@ BEGIN
         dbms_output.put_line(
             v_rec.supervisor_id || ' ' ||
             v_rec.name || ' ' ||
+            v_rec.rental_id || ' ' ||
             v_rec.street || ' ' ||
             v_rec.city || ' ' ||
             v_rec.zip
