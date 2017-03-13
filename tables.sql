@@ -1,3 +1,9 @@
+DROP TABLE LeaseAgreement;
+DROP TABLE Property;
+DROP TABLE Employee;
+DROP TABLE Owner;
+DROP TABLE Branch;
+
 CREATE TABLE Branch (
     branch_id INTEGER,
     phone VARCHAR(12),
@@ -36,6 +42,7 @@ CREATE TABLE LeaseAgreement (
 CREATE TABLE Property (
     rental_id INTEGER PRIMARY KEY,
     owner_id INTEGER REFERENCES Owner(owner_id),
+    branch_id INTEGER REFERENCES Branch(branch_id),
     num_rooms INTEGER,
     monthly_rent NUMBER(6,2),
     status VARCHAR(9) CHECK (status IN ('available','leased'),
