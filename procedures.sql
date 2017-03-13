@@ -64,6 +64,7 @@ END list_supervisors;
 /
 show errors;
 
+
 -- 3)
 CREATE OR REPLACE PROCEDURE list_rentals_by_owner(arg_owner IN INTEGER) AS
 DECLARE
@@ -92,6 +93,7 @@ BEGIN
 END list_rentals_by_owner;
 /
 show errors;
+
 
 -- 4)
 CREATE OR REPLACE PROCEDURE list_rentals_by_criteria(
@@ -123,6 +125,7 @@ END list_rentals_by_criteria;
 /
 show errors;
 
+
 -- 5)
 CREATE OR REPLACE PROCEDURE list_rentals_by_branch(arg_branch IN INTEGER) AS
 DECLARE
@@ -137,3 +140,49 @@ BEGIN
         dbms_output.put_line(v_rec.branch_id || " " || v_rec.num);
     END LOOP;
 END list_rentals_by_branch;
+/
+show errors;
+
+
+-- 6)
+CREATE OR REPLACE PROCEDURE new_lease(
+    arg_lease_id IN INTEGER,
+    arg_rental_id IN INTEGER,
+    arg_renter_name IN VARCHAR2,
+    arg_phone_work IN VARCHAR2,
+    arg_phone_home IN VARCHAR2,
+    arg_friend_name IN VARCHAR2,
+    arg_friend_phone IN VARCHAR2,
+    arg_date_start IN DATE,
+    arg_date_end IN DATE
+) AS
+DECLARE
+    var_deposit NUMBER(6,2);
+    var_rent NUMBER(6,2);
+BEGIN
+    -- fetch monthly rent
+    SELECT monthly_rent
+    INTO var_deposit
+    FROM Property
+    WHERE rental_id = arg_rental_id;
+
+    -- calculate total rent
+    var_rent := var_deposit * (arg_date_end - arg_date_start) / 30;
+
+    -- create new lease agreement
+    INSERT INTO LeaseAgreement VALUES(
+        arg_lease_id,
+        arg_rental_id,
+        arg_renter_name,
+        arg_phone_work,
+        arg_phone_home,
+        arg_friend_name,
+        arg_friend_phone,
+        arg_date_start,
+        arg_date_end,
+        var_rent,
+        var_deposit
+    );
+END new_lease;
+/
+show errors;
