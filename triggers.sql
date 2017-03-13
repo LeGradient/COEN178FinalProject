@@ -10,13 +10,14 @@ DECLARE
     WHERE job = 'manager';
 
 BEGIN
-    IF :new.job = 'manager'
-    FOR v_rec IN cur_employees
-    LOOP
-        IF v_rec = :.new.branch_id THEN
-             RAISE_APPLICATION_ERROR(-20000, 'Invalid argument: branch already has a manager');
-        END IF;
-    END LOOP;
+    IF :new.job = 'manager' THEN
+        FOR v_rec IN cur_employees
+        LOOP
+            IF v_rec = :.new.branch_id THEN
+                 RAISE_APPLICATION_ERROR(-20000, 'Invalid argument: branch already has a manager');
+            END IF;
+        END LOOP;
+    END IF;
 END;
 /
 show errors;
