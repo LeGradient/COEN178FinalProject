@@ -1,6 +1,5 @@
 -- 1)
 CREATE OR REPLACE PROCEDURE available_rentals(arg_branch IN INTEGER) AS
-DECLARE
     var_manager VARCHAR2(30);
     CURSOR cur_rentals IS
         SELECT rental_id, street, city, zip
@@ -39,7 +38,6 @@ show errors;
 
 -- 2)
 CREATE OR REPLACE PROCEDURE list_supervisors AS
-DECLARE
     CURSOR cur_supervisors IS
         SELECT
             Property.supervisor_id,
@@ -67,7 +65,6 @@ show errors;
 
 -- 3)
 CREATE OR REPLACE PROCEDURE list_rentals_by_owner(arg_owner IN INTEGER) AS
-DECLARE
     var_ownername VARCHAR2(30);
     CURSOR cur_rentals IS
         SELECT rental_id, street, city, zip
@@ -102,7 +99,6 @@ CREATE OR REPLACE PROCEDURE list_rentals_by_criteria(
     arg_rent_min IN NUMBER,
     arg_rent_max IN NUMBER
 ) AS
-DECLARE
     CURSOR cur_rentals IS
         SELECT rental_id, street, city, zip
         FROM Property
@@ -128,7 +124,6 @@ show errors;
 
 -- 5)
 CREATE OR REPLACE PROCEDURE list_rentals_by_branch(arg_branch IN INTEGER) AS
-DECLARE
     CURSOR cur_rentals IS
         SELECT branch_id, COUNT(*) num
         FROM Property JOIN Employee
@@ -156,7 +151,6 @@ CREATE OR REPLACE PROCEDURE new_lease(
     arg_date_start IN DATE,
     arg_date_end IN DATE
 ) AS
-DECLARE
     var_deposit NUMBER(6,2);
     var_rent NUMBER(6,2);
 BEGIN
