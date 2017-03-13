@@ -42,6 +42,7 @@ CREATE OR REPLACE PROCEDURE list_supervisors AS
         SELECT
             Property.supervisor_id,
             Employee.name,
+            Property.rental_id,
             Property.street,
             Property.city,
             Property.zip
@@ -53,6 +54,7 @@ BEGIN
         dbms_output.put_line(
             v_rec.supervisor_id || ' ' ||
             v_rec.name || ' ' ||
+            v_rec.rental_id || ' ' ||
             v_rec.street || ' ' ||
             v_rec.city || ' ' ||
             v_rec.zip
@@ -123,11 +125,12 @@ show errors;
 
 
 -- 5)
-CREATE OR REPLACE PROCEDURE list_rentals_by_branch(arg_branch IN INTEGER) AS
+CREATE OR REPLACE PROCEDURE list_rentals_per_branch(arg_branch IN INTEGER) AS
     CURSOR cur_rentals IS
         SELECT branch_id, COUNT(*) num
         FROM Property JOIN Employee
         ON Property.supervisor_id = Employee.emp_id
+        WHERE Property.status = 'available'
         GROUP BY branch_id;
 BEGIN
     FOR v_rec IN cur_rentals
@@ -151,9 +154,20 @@ CREATE OR REPLACE PROCEDURE new_lease(
     arg_date_start IN DATE,
     arg_date_end IN DATE
 ) AS
+    var_status VARCHAR2(9);
     var_deposit NUMBER(6,2);
     var_rent NUMBER(8,2);
 BEGIN
+    -- make sure that the property is available
+    SELECT status
+    INTO var_status
+    FROM Property
+    WHERE rental_id = arg_rental_id;
+    
+    IF var_status = 'rented' THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Invalid argument: property is not available');
+    END IF;
+
     -- fetch monthly rent
     SELECT monthly_rent
     INTO var_deposit
