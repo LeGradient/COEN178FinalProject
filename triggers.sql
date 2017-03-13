@@ -32,7 +32,7 @@ BEGIN
         raise_application_error(-20001, 'Invalid argument: rental time must be between 6 and 12 months"');
     END IF;
     IF (:new.date_end - :new.date_start)/30 = 6 THEN
-        :new.monthly_rent := (:new.monthly_rent * 1.1);
+        :new.rent := (:new.rent * 1.1);
     END IF;
 END;
 /
