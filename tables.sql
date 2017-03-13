@@ -5,7 +5,7 @@ DROP TABLE Owner;
 DROP TABLE Branch;
 
 CREATE TABLE Branch (
-    branch_id INTEGER,
+    branch_id INTEGER PRIMARY KEY,
     phone VARCHAR(12),
     street VARCHAR(30),
     city VARCHAR(30),
