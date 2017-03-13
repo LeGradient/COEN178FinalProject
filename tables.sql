@@ -18,7 +18,7 @@ CREATE TABLE Employee (
     branch_id INTEGER REFERENCES Branch(branch_id),
     name VARCHAR(30),
     phone VARCHAR(12),
-    job VARCHAR(10) CHECK (job IN ('manager','supervisor'),
+    job VARCHAR(10) CHECK (job IN ('manager','supervisor')),
     start_date DATE
 );
 
@@ -45,7 +45,7 @@ CREATE TABLE Property (
     branch_id INTEGER REFERENCES Branch(branch_id),
     num_rooms INTEGER,
     monthly_rent NUMBER(6,2),
-    status VARCHAR(9) CHECK (status IN ('available','leased'),
+    status VARCHAR(9) CHECK (status IN ('available','leased')),
     street VARCHAR(30),
     city VARCHAR(30),
     zip INTEGER
