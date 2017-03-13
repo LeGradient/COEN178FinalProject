@@ -13,7 +13,7 @@ BEGIN
     IF :new.job = 'manager' THEN
         FOR v_rec IN cur_employees
         LOOP
-            IF v_rec = :.new.branch_id THEN
+            IF v_rec = :new.branch_id THEN
                  RAISE_APPLICATION_ERROR(-20000, 'Invalid argument: branch already has a manager');
             END IF;
         END LOOP;
@@ -60,7 +60,7 @@ BEGIN
     WHERE :old.rental_id = LeaseAgreement.rental_id;
 END;
 /
-show erros;
+show error:s;
 
 -- e)
 CREATE OR REPLACE TRIGGER rent_increase
