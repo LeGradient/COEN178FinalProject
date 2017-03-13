@@ -4,16 +4,19 @@ CREATE OR REPLACE TRIGGER manager_branch
     FOR EACH ROW
 
 DECLARE
-    CURSOR cur_manager IS 
+    CURSOR cur_employees IS 
     SELECT branch_id
     FROM Employee
     WHERE job = 'manager';
 
 BEGIN
     IF :new.job = 'manager'
-    AND :new.branch_id IN (cur_manager) THEN
-        RAISE_APPLICATION_ERROR(-20000, 'Invalid argument: branch already has a manager');
-    END IF;
+    FOR v_rec IN cur_employees
+    LOOP
+        IF v_rec = :.new.branch_id THEN
+             RAISE_APPLICATION_ERROR(-20000, 'Invalid argument: branch already has a manager');
+        END IF;
+    END LOOP;
 END;
 /
 show errors;
