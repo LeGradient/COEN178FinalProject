@@ -152,7 +152,7 @@ CREATE OR REPLACE PROCEDURE new_lease(
     arg_date_end IN DATE
 ) AS
     var_deposit NUMBER(6,2);
-    var_rent NUMBER(6,2);
+    var_rent NUMBER(8,2);
 BEGIN
     -- fetch monthly rent
     SELECT monthly_rent
