@@ -25,9 +25,9 @@ BEGIN
     FOR v_rec IN cur_rentals
     LOOP
         dbms_output.put_line(
-            v_rec.rental_id || " " ||
-            v_rec.street || " " ||
-            v_rec.city || " " ||
+            v_rec.rental_id || ' ' ||
+            v_rec.street || ' ' ||
+            v_rec.city || ' ' ||
             v_rec.zip
         );
     END LOOP;
@@ -51,10 +51,10 @@ BEGIN
     FOR v_rec IN cur_supervisors
     LOOP
         dbms_output.put_line(
-            v_rec.supervisor_id || " " ||
-            v_rec.name || " " ||
-            v_rec.street || " " ||
-            v_rec.city || " " ||
+            v_rec.supervisor_id || ' ' ||
+            v_rec.name || ' ' ||
+            v_rec.street || ' ' ||
+            v_rec.city || ' ' ||
             v_rec.zip
         );
     END LOOP;
@@ -81,9 +81,9 @@ BEGIN
     FOR v_rec IN cur_rentals
     LOOP
         dbms_output.put_line(
-            v_rec.rental_id || " " ||
-            v_rec.street || " " ||
-            v_rec.city || " " ||
+            v_rec.rental_id || ' ' ||
+            v_rec.street || ' ' ||
+            v_rec.city || ' ' ||
             v_rec.zip
         );
     END LOOP;
@@ -111,9 +111,9 @@ BEGIN
     FOR v_rec IN cur_rentals
     LOOP
         dbms_output.put_line(
-            v_rec.rental_id || " " ||
-            v_rec.street || " " ||
-            v_rec.city || " " ||
+            v_rec.rental_id || ' ' ||
+            v_rec.street || ' ' ||
+            v_rec.city || ' ' ||
             v_rec.zip
         );
     END LOOP;
@@ -132,7 +132,7 @@ CREATE OR REPLACE PROCEDURE list_rentals_by_branch(arg_branch IN INTEGER) AS
 BEGIN
     FOR v_rec IN cur_rentals
     LOOP
-        dbms_output.put_line(v_rec.branch_id || " " || v_rec.num);
+        dbms_output.put_line(v_rec.branch_id || ' ' || v_rec.num);
     END LOOP;
 END list_rentals_by_branch;
 /
