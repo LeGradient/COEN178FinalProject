@@ -11,6 +11,16 @@ CREATE TABLE Branch (
     city VARCHAR(30),
     zip INTEGER
 );
+  
+  
+CREATE TABLE Owner (
+    owner_id INTEGER PRIMARY KEY,
+    name VARCHAR(30),
+    phone VARCHAR(12),
+    street VARCHAR(30),
+    city VARCHAR(30),
+    zip INTEGER
+);
 
 
 CREATE TABLE Employee (
@@ -20,6 +30,19 @@ CREATE TABLE Employee (
     phone VARCHAR(12),
     job VARCHAR(10) CHECK (job IN ('manager','supervisor')),
     start_date DATE
+);
+
+
+CREATE TABLE Property (
+    rental_id INTEGER PRIMARY KEY,
+    owner_id INTEGER REFERENCES Owner(owner_id),
+    branch_id INTEGER REFERENCES Branch(branch_id),
+    num_rooms INTEGER,
+    monthly_rent NUMBER(6,2),
+    status VARCHAR(9) CHECK (status IN ('available','leased')),
+    street VARCHAR(30),
+    city VARCHAR(30),
+    zip INTEGER
 );
 
 
@@ -36,27 +59,4 @@ CREATE TABLE LeaseAgreement (
     monthly_rent NUMBER(6,2),
     deposit NUMBER(6,2),
     emp_id INTEGER REFERENCES Employee(emp_id)
-);
-
-
-CREATE TABLE Property (
-    rental_id INTEGER PRIMARY KEY,
-    owner_id INTEGER REFERENCES Owner(owner_id),
-    branch_id INTEGER REFERENCES Branch(branch_id),
-    num_rooms INTEGER,
-    monthly_rent NUMBER(6,2),
-    status VARCHAR(9) CHECK (status IN ('available','leased')),
-    street VARCHAR(30),
-    city VARCHAR(30),
-    zip INTEGER
-);
-  
-  
-CREATE TABLE Owner (
-    owner_id INTEGER PRIMARY KEY,
-    name VARCHAR(30),
-    phone VARCHAR(12),
-    street VARCHAR(30),
-    city VARCHAR(30),
-    zip INTEGER
 );
