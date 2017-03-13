@@ -10,9 +10,9 @@ INSERT INTO Owner VALUES(3,'Barry Brown', '898-222-1232', '22nd Street', 'Los An
 INSERT INTO Owner VALUES(4,'Chris ', '920-513-4552', '10th Street', 'San Jose, CA', '91222');
 INSERT INTO Owner VALUES(5,'Ann Angelo', '928-123-9083', '23rd Street', 'San Jose, CA', '91321');
 
-INSERT INTO Employee VALUES(1,1,'The Man', '292-222-1882', 'manager','14-Fed-1980');
+INSERT INTO Employee VALUES(1,1,'The Man', '292-222-1882', 'manager','14-Feb-1980');
 INSERT INTO Employee VALUES(2,1,'The Man Jr.', '232-265-1852', 'supervisor','25-Mar-2007');
-INSERT INTO Employee VALUES(3,2,'Matt Brown', '126-982-1233', 'manager','13-Hun-2011');
+INSERT INTO Employee VALUES(3,2,'Matt Brown', '126-982-1233', 'manager','13-Jun-2011');
 INSERT INTO Employee VALUES(4,2,'Peter Piper', '123-928-1832', 'supervisor','28-Nov-2321');
 INSERT INTO Employee VALUES(5,3,'Peter Pan', '222-283-1718', 'manager','9-Mar-2013');
 INSERT INTO Employee VALUES(6,3,'Squidward', '222-213-8972', 'supervisor','12-Mar-2012');
@@ -26,8 +26,8 @@ INSERT INTO Property VALUES(2,1,4,4,1400.33,'available','222nd Street','San Jose
 INSERT INTO Property VALUES(3,2,6,5,1834.78,'avaiable','17th Street','San Jose, CA','98283');
 INSERT INTO Property VALUES(4,2,8,2,1139.67,'leased','200th Street','San Fransico, CA','99162');
 INSERT INTO Property VALUES(5,3,10,3,1234.23,'leased','271st Street','San Deigo, CA','97362');
-INSERT INTO Property VALUES(6,4,8,1400.33,'available','222nd Street','San Jose, CA','97222');
-INSERT INTO Property VALUES(7,5,10,1834.78,'avaiable','17th Street','San Jose, CA','98283');
+INSERT INTO Property VALUES(6,4,8,8,1400.33,'available','222nd Street','San Jose, CA','97222');
+INSERT INTO Property VALUES(7,5,10,123,9990.78,'avaiable','17th Street','San Jose, CA','98283');
 
 
 
