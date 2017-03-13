@@ -3,7 +3,7 @@ CREATE OR REPLACE TRIGGER manager_branch
     BEFORE INSERT ON Employee
     FOR EACH ROW
 BEGIN
-    IF :new.job == 'manager'
+    IF :new.job = 'manager'
     AND :new.branch_id IN (
         SELECT branch_id
         FROM Employee
@@ -21,10 +21,10 @@ CREATE OR REPLACE TRIGGER check_rentaltime
     BEFORE INSERT ON LeaseAgreement
     FOR EACH ROW
 BEGIN 
-    IF (:new.end_date) - :new.start_date)/30 < 6 OR (:new.end_date) - :new.start_date)/30 > 12 THEN
+    IF (:new.date_end) - :new.date_start)/30 < 6 OR (:new.date_end) - :new.date_start)/30 > 12 THEN
         raise_application_error(-20001, 'Invalid argument: rental time must be between 6 and 12 months"');
     END IF;
-    IF (:new.end_date - :new.start_date)/30 == 6 THEN
+    IF (:new.date_end - :new.date_start)/30 = 6 THEN
         :new.monthly_rent = (:new.monthly_rent * 1.1);
     END IF;
 END;
