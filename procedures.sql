@@ -128,6 +128,7 @@ CREATE OR REPLACE PROCEDURE list_rentals_per_branch(arg_branch IN INTEGER) AS
         SELECT branch_id, COUNT(*) num
         FROM Property JOIN Employee
         ON Property.supervisor_id = Employee.emp_id
+        WHERE Property.status = 'available'
         GROUP BY branch_id;
 BEGIN
     FOR v_rec IN cur_rentals
