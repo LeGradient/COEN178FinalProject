@@ -295,3 +295,5 @@ BEGIN
         );
     END LOOP;
 END expire_soon;
+/
+show errors;
