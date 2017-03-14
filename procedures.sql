@@ -220,14 +220,14 @@ show errors;
 -- 8)
 CREATE OR REPLACE PROCEDURE multi_renters AS
     CURSOR cur_renters IS
-        SELECT renter_id, renter_name
+        SELECT renter_id, name
         FROM Renters
         WHERE renter_id IN (
             SELECT renter_id
             FROM LeaseAgreement
             GROUP BY renter_id
             HAVING COUNT(*) > 1
-        )
+        );
 BEGIN
     FOR v_rec IN cur_renters
     LOOP
