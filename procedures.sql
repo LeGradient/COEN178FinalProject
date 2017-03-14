@@ -194,3 +194,31 @@ BEGIN
 END new_lease;
 /
 show errors;
+
+
+-- 9)
+CREATE OR REPLACE PROCEDURE average_rent(arg_city IN VARCHAR2) AS
+    var_avgrent_leased NUMBER(8,2);
+    var_avgrent_available NUMBER(8,2);
+    var_avgrent_all NUMBER(8,2);
+BEGIN
+    SELECT AVG(rent)
+    INTO var_avgrent_leased
+    FROM LeaseAgreement
+    WHERE status = 'leased';
+
+    SELECT AVG(rent)
+    INTO var_avgrent_available
+    FROM LeaseAgreement
+    WHERE status = 'available';
+
+    var_avgrent_all := (var_avgrent_leased + var_avgrent_available) / 2;
+
+    dbms_output.put_line('Average rent in ' || arg_city);
+    dbms_output.put_line('Leased: ' || var_avgrent_leased);
+    dbms_output.put_line('Available: ' || var_avgrent_available);
+    dbms_output.put_line('All: ' || var_avgrent_all);
+
+END average_rent;
+/
+show errors;
