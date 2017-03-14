@@ -8,8 +8,8 @@ public class UserInterface extends JFrame implements ActionListener {
 
     // Oracle database connection parameters
     private static final String database = "jdbc:oracle:thin:@dagobah.engr.scu.edu:1521:db11g";
-    private static final String username = "amartin";
-    private static final String password = "throwaway";
+    private static final String username = "ddallaga";
+    private static final String password = "testtest19";
 
     private Connection connection;                  // Oracle database connection object
     private JPanel procPanel[] = new JPanel[10];    // Houses the controls for each procedure
