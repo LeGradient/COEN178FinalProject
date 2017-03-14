@@ -14,12 +14,17 @@ public class UserInterface extends JFrame implements ActionListener {
     private Connection connection;                  // Oracle database connection object
     private JPanel procPanel[] = new JPanel[10];    // Houses the controls for each procedure
     private Font fontBtn = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
+    Font fontMono = new Font(Font.MONOSPACED, Font.PLAIN, 24);
 
 
     private void initProcPanel0() {
         this.procPanel[0] = new JPanel();
         this.procPanel[0].setLayout(new BorderLayout());
         //this.procPanel[0].setPreferredSize(new Dimension(300, 600));
+
+        JTextArea resultArea = new JTextArea("results will be shown here");
+        resultArea.setFont(fontMono);
+        this.procPanel[0].add(resultArea, BorderLayout.CENTER);
 
         JPanel subpanel1 = new JPanel();
         subpanel1.setLayout(new FlowLayout());
@@ -40,10 +45,18 @@ public class UserInterface extends JFrame implements ActionListener {
         submitBtn.addActionListener(actionEvent -> {
             String arg = branchField.getText();
             try {
-                CallableStatement stmt = this.connection.prepareCall("{call available_rentals(?)}");
-                stmt.setInt(1, Integer.parseInt(branchField.getText()));
-                boolean hadResults = stmt.execute();
-                ResultSet result = stmt.getResultSet();
+                String sql = "SELECT rental_id, street, city, zip " +
+                            "FROM Property " +
+                            "WHERE supervisor_id IN (" +
+                                "SELECT emp_id " +
+                                "FROM Employee " +
+                                "WHERE branch_id = arg_branch" +
+                            ");";
+                Statement stmt = this.connection.createStatement();
+                ResultSet result = stmt.executeQuery(sql);
+                while (result.next()) {
+                    System.out.println(result.getInt("rental_id"));
+                }
             } catch (SQLException e) {
                 System.out.println("Could not initialize procPanel[0]!");
                 System.out.println(e);
