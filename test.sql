@@ -8,7 +8,7 @@
 select * from property;
 execute new_lease(1,2,'Mr. Guy','332-343-2312','982-232-4212','first guy','293-232-1312','6-Mar-2017','6-Apr-2017');
 execute new_lease(1,2,'Mr. Guy','332-343-2312','982-232-4212','first guy','293-232-1312','6-Mar-2017','6-Apr-2018');
-execute new_lease(1,2,'Mr. Guy','332-343-2312','982-232-4212','first guy','293-232-1312','6-Mar-2017','6-Apr-2017');
+execute new_lease(1,2,'Mr. Guy','332-343-2312','982-232-4212','first guy','293-232-1312','6-Mar-2017','6-Sep-2017');
 select * from LeaseAgreement;
 execute new_lease(2,3,'Hey','332-311-2312','982-232-4212','first guy','293-232-1312','6-Mar-2017','6-Apr-2017');
 select * from LeaseAgreement;
