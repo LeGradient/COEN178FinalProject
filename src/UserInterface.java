@@ -8,7 +8,7 @@ public class UserInterface extends JFrame {
 
     public UserInterface() {
         Container container = this.getContentPane();
-
+        // useless comment
     }
 
 
