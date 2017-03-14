@@ -1,6 +1,7 @@
 DROP TABLE LeaseAgreement;
 DROP TABLE Property;
 DROP TABLE Employee;
+DROP TABLE Renter;
 DROP TABLE Owner;
 DROP TABLE Branch;
 
