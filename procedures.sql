@@ -172,8 +172,8 @@ BEGIN
     -- fetch renter name and phone numbers
     SELECT name, phone_work, phone_home
     INTO var_renter_name, var_phone_work, var_phone_home
-    FROM Renter
-    WHERE renter_id = arg_renter_id
+    FROM Renters
+    WHERE renter_id = arg_renter_id;
 
     -- fetch monthly rent
     SELECT monthly_rent
