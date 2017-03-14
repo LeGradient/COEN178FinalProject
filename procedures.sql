@@ -247,12 +247,14 @@ BEGIN
     SELECT AVG(monthly_rent)
     INTO var_avgrent_leased
     FROM Property
-    WHERE status = 'leased';
+    WHERE status = 'leased'
+    AND city = arg_city;
 
     SELECT AVG(monthly_rent)
     INTO var_avgrent_available
     FROM Property
-    WHERE status = 'available';
+    WHERE status = 'available'
+    AND city = arg_city;
 
     var_avgrent_all := (var_avgrent_leased + var_avgrent_available) / 2;
 
