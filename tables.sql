@@ -1,7 +1,7 @@
 DROP TABLE LeaseAgreement;
 DROP TABLE Property;
 DROP TABLE Employee;
-DROP TABLE Renter;
+DROP TABLE Renters;
 DROP TABLE Owner;
 DROP TABLE Branch;
 
@@ -24,7 +24,7 @@ CREATE TABLE Owner (
 );
 
 
-CREATE TABLE Renter (
+CREATE TABLE Renters (
     renter_id INTEGER PRIMARY KEY,
     name VARCHAR(30),
     phone_work VARCHAR(12),
@@ -58,7 +58,7 @@ CREATE TABLE Property (
 CREATE TABLE LeaseAgreement (
     lease_id INTEGER PRIMARY KEY,
     rental_id INTEGER REFERENCES Property(rental_id),
-    renter_id INTEGER REFERENCES Renter(renter_id),
+    renter_id INTEGER REFERENCES Renters(renter_id),
     friend_name VARCHAR(30),
     friend_phone VARCHAR(12),
     date_start DATE,
