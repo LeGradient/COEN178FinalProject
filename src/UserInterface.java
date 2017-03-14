@@ -1,10 +1,23 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import javax.swing.*;
 
-public class UserInterface extends JFrame {
+public class UserInterface extends JFrame implements ActionListener {
 
-    private Connection connection;  // Oracle database connection object
+    private Connection connection;                  // Oracle database connection object
+    private JPanel procPanel[] = new JPanel[10];    // Houses the controls for each procedure
+
+
+    private void initProcPanel0() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        JLabel branchLabel = new JLabel("Branch ID:");
+        JTextField branchField = new JTextField();
+        procPanel[0] = panel;
+    }
+
 
     public UserInterface() {
         Container container = this.getContentPane();
@@ -27,17 +40,29 @@ public class UserInterface extends JFrame {
         procBtn[7] = new JButton("Show Renters With Multiple Leases");
         procBtn[8] = new JButton("Show Average Rent By Town");
         procBtn[9] = new JButton("Show Leases That Expire Soon");
-        for (JButton button : procBtn) {
-            button.setPreferredSize(new Dimension(500, 50));
-            button.setFont(fontBtn);
-            menuPanel.add(button);
+        for (int i = 0; i < procBtn.length; i++) {
+            procBtn[i].setPreferredSize(new Dimension(500, 50));
+            procBtn[i].setFont(fontBtn);
+            procBtn[i].setActionCommand(((Integer)i).toString());
+            procBtn[i].addActionListener(this);
+            menuPanel.add(procBtn[i]);
         }
 
+        // init panels
+        for (JPanel panel : this.procPanel) {
+            // anything that needs to happen to all panels
+        }
 
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+    }
+
+
+    public void actionPerformed(ActionEvent event) {
+        int index = Integer.parseInt(event.getActionCommand());
+        this.getContentPane().add(procPanel[index], BorderLayout.CENTER);
     }
 
 
