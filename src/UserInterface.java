@@ -51,7 +51,7 @@ public class UserInterface extends JFrame implements ActionListener {
                                 "SELECT emp_id " +
                                 "FROM Employee " +
                                 "WHERE branch_id = arg_branch" +
-                            ");";
+                            ")";
                 Statement stmt = this.connection.createStatement();
                 ResultSet result = stmt.executeQuery(sql);
                 while (result.next()) {
