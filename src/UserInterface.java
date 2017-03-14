@@ -44,6 +44,7 @@ public class UserInterface extends JFrame implements ActionListener {
                 stmt.setString(1, branchField.getText());
             } catch (SQLException e) {
                 System.out.println("Could not initialize procPanel[0]!");
+                System.out.println(e);
                 System.exit(1);
             }
         });
