@@ -41,7 +41,9 @@ public class UserInterface extends JFrame implements ActionListener {
             String arg = branchField.getText();
             try {
                 CallableStatement stmt = this.connection.prepareCall("{call available_rentals(?)}");
-                stmt.setString(1, branchField.getText());
+                stmt.setInt(1, Integer.parseInt(branchField.getText()));
+                boolean hadResults = stmt.execute();
+                ResultSet result = stmt.getResultSet();
             } catch (SQLException e) {
                 System.out.println("Could not initialize procPanel[0]!");
                 System.out.println(e);
@@ -130,9 +132,6 @@ public class UserInterface extends JFrame implements ActionListener {
         } catch (ClassNotFoundException e) {
             System.out.println("Could not find DB driver class!");
             System.exit(1);
-        } finally {
-            if (ui != null)
-                ui.cleanup();
         }
     }
 }
