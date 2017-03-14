@@ -227,7 +227,7 @@ CREATE OR REPLACE PROCEDURE multi_renters AS
             FROM LeaseAgreement
             GROUP BY renter_id
             HAVING COUNT(*) > 1
-        )
+        );
 BEGIN
     FOR v_rec IN cur_renters
     LOOP
