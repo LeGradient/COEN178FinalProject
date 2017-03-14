@@ -33,7 +33,7 @@ BEGIN
     END IF;
     DBMS_OUTPUT.PUT_LINE(:new.date_end - :new.date_start);
     DBMS_OUTPUT.PUT_LINE((:new.date_end - :new.date_start)/30);
-    IF (:new.date_end - :new.date_start)/30 >= 6 AND :new.date_end - :new.date_start)/30 < 7 THEN
+    IF (((:new.date_end - :new.date_start)/30 >= 6) AND ((:new.date_end - :new.date_start)/30 < 7)) THEN
         :new.rent := (:new.rent * 1.1);
     END IF;
 END;
