@@ -137,7 +137,7 @@ BEGIN
     LOOP
         dbms_output.put_line(v_rec.branch_id || ' ' || v_rec.num);
     END LOOP;
-END list_rentals_by_branch;
+END list_rentals_per_branch;
 /
 show errors;
 
