@@ -31,6 +31,8 @@ BEGIN
     IF ((:new.date_end) - :new.date_start)/30 < 6 OR ((:new.date_end) - :new.date_start)/30 > 12 THEN
         raise_application_error(-20001, 'Invalid argument: rental time must be between 6 and 12 months"');
     END IF;
+    DBMS_OUTPUT.PUT_LINE(:new.date_end - :new.date_start);
+    DBMS_OUTPUT.PUT_LINE((:new.date_end - :new.date_start)/30);
     IF (:new.date_end - :new.date_start)/30 = 6 THEN
         :new.rent := (:new.rent * 1.1);
     END IF;
