@@ -55,7 +55,7 @@ public class UserInterface extends JFrame implements ActionListener {
                 Statement stmt = this.connection.createStatement();
                 ResultSet result = stmt.executeQuery(sql);
                 while (result.next()) {
-                    System.out.println(result.getInt("rental_id"));
+                    resultArea.setText(result.getString("rental_id"));
                 }
             } catch (SQLException e) {
                 System.out.println("Could not initialize procPanel[0]!");
