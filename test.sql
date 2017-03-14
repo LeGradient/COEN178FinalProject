@@ -16,7 +16,7 @@ select * from Property;
 execute new_lease(3,3,2,'first guy','293-232-1312','6-Apr-2017','6-Nov-2017');
 select * from LeaseAgreement;
 select * from Property;
-execute new_lease(3,6,1,'big dude','232-232-2323', '12-Feb-2017', '15-Dec-2017');
+execute new_lease(4,6,1,'big dude','232-232-2323', '12-Feb-2017', '15-Dec-2017');
 select * from LeaseAgreement;
 select * from Renters;
 select * from Property;
