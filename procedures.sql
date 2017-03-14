@@ -277,13 +277,10 @@ show errors;
 -- 10)
 CREATE OR REPLACE PROCEDURE expire_soon AS
     CURSOR cur_leases IS
-        SELECT rental_id, street, city, zip
-        FROM Property
-        WHERE rental_id IN (
-            SELECT rental_id
-            FROM LeaseAgreement
-            WHERE MONTHS_BETWEEN(SYSDATE, date_end) <= 2
-        );
+        SELECT lease_id, Property.rental_id, street, city, zip
+        FROM Property JOIN LeaseAgreement
+        ON Property.rental_id = LeaseAgreement.rental_id
+        WHERE MONTHS_BETWEEN(date_end, SYSDATE) <= 2;
 BEGIN
     FOR v_rec IN cur_leases
     LOOP
