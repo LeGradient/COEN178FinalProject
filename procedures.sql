@@ -231,7 +231,7 @@ CREATE OR REPLACE PROCEDURE multi_renters AS
 BEGIN
     FOR v_rec IN cur_renters
     LOOP
-        dbms_output.put_line(v_rec.renter_id || ' ' || v_rec.renter_name);
+        dbms_output.put_line(v_rec.renter_id || ' ' || v_rec.name);
     END LOOP;
 END multi_renters;
 /
