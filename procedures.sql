@@ -272,3 +272,26 @@ BEGIN
 END average_rent;
 /
 show errors;
+
+
+-- 10)
+CREATE OR REPLACE PROCEDURE expire_soon AS
+    CURSOR cur_leases IS
+        SELECT rental_id, street, city, zip
+        FROM Property
+        WHERE rental_id IN (
+            SELECT rental_id
+            FROM LeaseAgreement
+            WHERE MONTHS_BETWEEN(SYSDATE, date_end) <= 2
+        );
+BEGIN
+    FOR v_rec IN cur_leases
+    LOOP
+        dbms_output.put_line(
+            v_rec.rental_id || ' ' ||
+            v_rec.street || ' ' ||
+            v_rec.city || ' ' ||
+            v_rec.zip
+        )
+    END LOOP;
+END expire_soon;
