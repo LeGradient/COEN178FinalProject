@@ -195,12 +195,12 @@ show errors;
 CREATE OR REPLACE PROCEDURE show_leases(
     arg_renter_id IN INTEGER
 ) AS
-    CURSOR cursor IS
+    CURSOR cur_lease IS
     SELECT *
     FROM LeaseAgreement
     WHERE renter_id = arg_renter_id; 
 BEGIN
-    FOR v_rec IN cursor
+    FOR v_rec IN cur_lease
     LOOP
         DBMS_OUTPUT.PUT_LINE(
             v_rec.lease_id || ' ' ||
