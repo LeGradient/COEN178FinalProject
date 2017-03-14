@@ -195,12 +195,12 @@ show errors;
 CREATE OR REPLACE PROCEDURE show_leases(
     arg_renter_id IN INTEGER
 ) AS
-    CURSOR cur IS
+    CURSOR lease_cur IS
     SELECT *
     FROM LeaseAgreement
     WHERE renter_id = arg_renter_id; 
 BEGIN
-    FOR v_rec IN cursor
+    FOR v_rec IN lease_cur
     LOOP
         DBMS_OUTPUT.PUT_LINE(
             v_rec.lease_id || ' ' ||
@@ -246,8 +246,6 @@ CREATE OR REPLACE PROCEDURE average_rent(arg_city IN VARCHAR2) AS
 BEGIN
     SELECT AVG(rent)
     INTO var_avgrent_leased
-    FROM LeaseAgreement
-    SELECT rental_id
     FROM Property
     WHERE status = 'leased';
 
