@@ -50,7 +50,7 @@ public class UserInterface extends JFrame implements ActionListener {
                             "WHERE supervisor_id IN (" +
                                 "SELECT emp_id " +
                                 "FROM Employee " +
-                                "WHERE branch_id = arg_branch" +
+                                "WHERE branch_id = " + branchField.getText() +
                             ")";
                 Statement stmt = this.connection.createStatement();
                 ResultSet result = stmt.executeQuery(sql);
