@@ -191,6 +191,31 @@ END new_lease;
 /
 show errors;
 
+-- 7)
+CREATE OR REPLACE PROCEDURE show_leases(
+    arg_renter_id IN INTEGER
+) AS
+    CURSOR cursor IS
+    SELECT *
+    FROM LeaseAgreement
+    WHERE renter_id = arg_renter_id; 
+BEGIN
+    FOR v_rec IN cursor
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            v_rec.lease_id || ' ' ||
+            v_rec.rental_id || ' ' ||
+            v_rec.friend_name || ' ' ||
+            v_rec.friend_phone || ' ' ||
+            v_rec.date_start || ' ' ||
+            v_rec.date_end || ' ' ||
+            v_rec.rent || ' ' ||
+            v_rec.deposit
+        );
+    END LOOP;
+END show_leases;
+/
+show errors;
 
 -- 8)
 CREATE OR REPLACE PROCEDURE multi_renters AS
