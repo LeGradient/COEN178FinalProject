@@ -195,12 +195,12 @@ show errors;
 CREATE OR REPLACE PROCEDURE show_leases(
     arg_renter_id IN INTEGER
 ) AS
-    CURSOR cur_lease IS
+    CURSOR cur IS
     SELECT *
     FROM LeaseAgreement
     WHERE renter_id = arg_renter_id; 
 BEGIN
-    FOR v_rec IN cur_lease
+    FOR v_rec IN cursor
     LOOP
         DBMS_OUTPUT.PUT_LINE(
             v_rec.lease_id || ' ' ||
@@ -247,20 +247,14 @@ BEGIN
     SELECT AVG(rent)
     INTO var_avgrent_leased
     FROM LeaseAgreement
-    WHERE rental_id IN (
-        SELECT rental_id
-        FROM Property
-        WHERE status = 'leased'
-    );
+    SELECT rental_id
+    FROM Property
+    WHERE status = 'leased';
 
     SELECT AVG(rent)
     INTO var_avgrent_available
-    FROM LeaseAgreement
-    WHERE rental_id IN (
-        SELECT rental_id
-        FROM Property
-        WHERE status = 'available'
-    );
+    FROM Property
+    WHERE status = 'available';
 
     var_avgrent_all := (var_avgrent_leased + var_avgrent_available) / 2;
 
