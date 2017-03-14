@@ -152,9 +152,6 @@ CREATE OR REPLACE PROCEDURE new_lease(
     arg_date_start IN DATE,
     arg_date_end IN DATE
 ) AS
-    var_renter_name VARCHAR2(30);
-    var_phone_work VARCHAR2(12);
-    var_phone_home VARCHAR2(12);
     var_status VARCHAR2(9);
     var_deposit NUMBER(6,2);
     var_rent NUMBER(8,2);
@@ -168,12 +165,6 @@ BEGIN
     IF var_status = 'rented' THEN
         RAISE_APPLICATION_ERROR(-20002, 'Invalid argument: property is not available');
     END IF;
-
-    -- fetch renter name and phone numbers
-    SELECT name, phone_work, phone_home
-    INTO var_renter_name, var_phone_work, var_phone_home
-    FROM Renter
-    WHERE renter_id = arg_renter_id
 
     -- fetch monthly rent
     SELECT monthly_rent
@@ -189,9 +180,6 @@ BEGIN
         arg_lease_id,
         arg_rental_id,
         arg_renter_id,
-        var_renter_name,
-        var_phone_work,
-        var_phone_home,
         arg_friend_name,
         arg_friend_phone,
         arg_date_start,
