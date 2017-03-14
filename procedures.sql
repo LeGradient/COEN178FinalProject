@@ -146,14 +146,15 @@ show errors;
 CREATE OR REPLACE PROCEDURE new_lease(
     arg_lease_id IN INTEGER,
     arg_rental_id IN INTEGER,
-    arg_renter_name IN VARCHAR2,
-    arg_phone_work IN VARCHAR2,
-    arg_phone_home IN VARCHAR2,
+    arg_renter_id IN INTEGER,
     arg_friend_name IN VARCHAR2,
     arg_friend_phone IN VARCHAR2,
     arg_date_start IN DATE,
     arg_date_end IN DATE
 ) AS
+    var_renter_name VARCHAR2(30);
+    var_phone_work VARCHAR2(12);
+    var_phone_home VARCHAR2(12);
     var_status VARCHAR2(9);
     var_deposit NUMBER(6,2);
     var_rent NUMBER(8,2);
@@ -168,6 +169,12 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20002, 'Invalid argument: property is not available');
     END IF;
 
+    -- fetch renter name and phone numbers
+    SELECT name, phone_work, phone_home
+    INTO var_renter_name, var_phone_work, var_phone_home
+    FROM Renter
+    WHERE renter_id = arg_renter_id
+
     -- fetch monthly rent
     SELECT monthly_rent
     INTO var_deposit
@@ -181,9 +188,10 @@ BEGIN
     INSERT INTO LeaseAgreement VALUES(
         arg_lease_id,
         arg_rental_id,
-        arg_renter_name,
-        arg_phone_work,
-        arg_phone_home,
+        arg_renter_id,
+        var_renter_name,
+        var_phone_work,
+        var_phone_home,
         arg_friend_name,
         arg_friend_phone,
         arg_date_start,
@@ -205,12 +213,20 @@ BEGIN
     SELECT AVG(rent)
     INTO var_avgrent_leased
     FROM LeaseAgreement
-    WHERE status = 'leased';
+    WHERE rental_id IN (
+        SELECT rental_id
+        FROM Property
+        WHERE status = 'leased'
+    );
 
     SELECT AVG(rent)
     INTO var_avgrent_available
     FROM LeaseAgreement
-    WHERE status = 'available';
+    WHERE rental_id IN (
+        SELECT rental_id
+        FROM Property
+        WHERE status = 'available'
+    );
 
     var_avgrent_all := (var_avgrent_leased + var_avgrent_available) / 2;
 

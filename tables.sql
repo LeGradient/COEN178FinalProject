@@ -23,6 +23,14 @@ CREATE TABLE Owner (
 );
 
 
+CREATE TABLE Renter (
+    renter_id INTEGER PRIMARY KEY,
+    name VARCHAR(30),
+    phone_work VARCHAR(12),
+    phone_home VARCHAR(12)
+);
+
+
 CREATE TABLE Employee (
     emp_id INTEGER PRIMARY KEY,
     branch_id INTEGER REFERENCES Branch(branch_id),
@@ -49,9 +57,7 @@ CREATE TABLE Property (
 CREATE TABLE LeaseAgreement (
     lease_id INTEGER PRIMARY KEY,
     rental_id INTEGER REFERENCES Property(rental_id),
-    renter_name VARCHAR(30),
-    phone_work VARCHAR(12),
-    phone_home VARCHAR(12),
+    renter_id INTEGER REFERENCES Renter(renter_id),
     friend_name VARCHAR(30),
     friend_phone VARCHAR(12),
     date_start DATE,
