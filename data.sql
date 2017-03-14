@@ -7,7 +7,7 @@ INSERT INTO Branch VALUES(5,'454-323-9872','6th Street', 'San Francisco, CA', '9
 INSERT INTO Owner VALUES(1,'Joe Johnson', '123-213-4232', '738th Street', 'San Francisco, CA', '93843');
 INSERT INTO Owner VALUES(2,'Jim Jameson', '920-221-4829', '90th Street', 'San Francisco, CA', '93432');
 INSERT INTO Owner VALUES(3,'Barry Brown', '898-222-1232', '22nd Street', 'Los Angelos, CA', '93928');
-INSERT INTO Owner VALUES(4,'Chris ', '920-513-4552', '10th Street', 'San Jose, CA', '91222');
+INSERT INTO Owner VALUES(4,'Chris', '920-513-4552', '10th Street', 'San Jose, CA', '91222');
 INSERT INTO Owner VALUES(5,'Ann Angelo', '928-123-9083', '23rd Street', 'San Jose, CA', '91321');
 
 INSERT INTO Employee VALUES(1,1,'The Man', '292-222-1882', 'manager','14-Feb-1980');
@@ -28,6 +28,10 @@ INSERT INTO Property VALUES(4,2,8,2,1139.67,'leased','200th Street','San Fransic
 INSERT INTO Property VALUES(5,3,10,3,1234.23,'leased','271st Street','San Deigo, CA','97362');
 INSERT INTO Property VALUES(6,4,8,8,1400.33,'available','222nd Street','San Jose, CA','97222');
 INSERT INTO Property VALUES(7,5,10,123,9990.78,'available','17th Street','San Jose, CA','98283');
+
+INSERT INTO Renters VALUES(1,'Mr. Guy','332-343-2312','982-232-4212');
+INSERT INTO Renters VALUES(2,'Hey','332-344-2312','982-232-4212');
+
 
 
 
