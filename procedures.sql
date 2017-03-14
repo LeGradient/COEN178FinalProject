@@ -292,6 +292,6 @@ BEGIN
             v_rec.street || ' ' ||
             v_rec.city || ' ' ||
             v_rec.zip
-        )
+        );
     END LOOP;
 END expire_soon;
