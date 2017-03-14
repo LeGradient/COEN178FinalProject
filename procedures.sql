@@ -244,12 +244,12 @@ CREATE OR REPLACE PROCEDURE average_rent(arg_city IN VARCHAR2) AS
     var_avgrent_available NUMBER(8,2);
     var_avgrent_all NUMBER(8,2);
 BEGIN
-    SELECT AVG(rent)
+    SELECT AVG(monthly_rent)
     INTO var_avgrent_leased
     FROM Property
     WHERE status = 'leased';
 
-    SELECT AVG(rent)
+    SELECT AVG(monthly_rent)
     INTO var_avgrent_available
     FROM Property
     WHERE status = 'available';
