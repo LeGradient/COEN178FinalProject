@@ -122,6 +122,58 @@ public class UserInterface extends JFrame implements ActionListener {
         }
     }
 
+    private class ProcPanel1 extends JPanel {
+        private JScrollPane resultsPane = new JScrollPane();
+
+        public ProcPanel1() {
+            // initialize results area
+
+            JPanel resultsPanel = new JPanel(new BorderLayout());
+            try {
+                // send query
+                String sql = "SELECT " +
+                        "Property.supervisor_id, " +
+                        "Employee.name, " +
+                        "Property.rental_id, " +
+                        "Property.street, " +
+                        "Property.city, " +
+                        "Property.zip" +
+                        "FROM Property JOIN Employee " +
+                        "ON Property.supervisor_id = Employee.emp_id";
+                Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                ResultSet result = stmt.executeQuery(sql);
+
+                // get column names
+                int colCount = result.getMetaData().getColumnCount();
+                String[] columns = new String[colCount];
+                for (int i = 0; i < result.getMetaData().getColumnCount(); i++){
+                    columns[i] = result.getMetaData().getColumnName(i + 1);
+                }
+
+                // get data
+                result.last();
+                int rowCount = result.getRow();
+                result.beforeFirst();
+                String[][] data = new String[rowCount][colCount];
+                for (int i = 0; i < rowCount; i++) {
+                    result.next();
+                    for (int j = 0; j < colCount; j++) {
+                        data[i][j] = result.getString(j + 1);
+                    }
+                }
+
+                this.remove(this.resultsPane);
+                this.resultsPane = new JScrollPane(new JTable(data, columns));
+                this.add(this.resultsPane, BorderLayout.CENTER);
+                this.revalidate();
+                this.repaint();
+            } catch (SQLException e) {
+                System.out.println("Could not initialize procPanel[0]!");
+                System.out.println(e);
+                System.exit(1);
+            }
+        }
+    }
 
 
 
@@ -163,8 +215,8 @@ public class UserInterface extends JFrame implements ActionListener {
         }
 
         // init panels
-        //initProcPanel0();
         this.procPanel[0] = new ProcPanel0();
+        this.procPanel[1] = new ProcPanel1();
         for (JPanel panel : this.procPanel) {
             // anything that needs to happen to all panels
         }
