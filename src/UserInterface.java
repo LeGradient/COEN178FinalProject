@@ -129,27 +129,7 @@ public class UserInterface extends JFrame implements ActionListener {
         public ProcPanel1() {
             // initialize results area
 
-//            // initialize menu
-//            JPanel menuPanel = new JPanel();
-//            menuPanel.setLayout(new FlowLayout());
-//            menuPanel.setPreferredSize(new Dimension(200, 0));
-//            menuPanel.setBackground(Color.GRAY);
-//            this.add(menuPanel, BorderLayout.LINE_START);
-//
-//            JLabel branchLabel = new JLabel("Branch ID:");
-//            branchLabel.setFont(UserInterface.this.fontBtn);
-//
-//            JTextField branchField = new JTextField(5);
-//            branchField.setFont(UserInterface.this.fontBtn);
-//
-//            JButton submitBtn = new JButton("Submit");
-//            submitBtn.setFont(UserInterface.this.fontBtn);
-//
-//            menuPanel.add(branchLabel);
-//            menuPanel.add(branchField);
-//            menuPanel.add(submitBtn);
-//
-//            JPanel resultsPanel = new JPanel(new BorderLayout());
+            JPanel resultsPanel = new JPanel(new BorderLayout());
 
             try {
                 // send query
@@ -190,7 +170,7 @@ public class UserInterface extends JFrame implements ActionListener {
                 this.revalidate();
                 this.repaint();
             } catch (SQLException e) {
-                System.out.println("Could not initialize procPanel[0]!");
+                System.out.println("Could not initialize procPanel[1]!");
 
                 System.out.println(e);
                 System.exit(1);
@@ -204,45 +184,68 @@ public class UserInterface extends JFrame implements ActionListener {
         public ProcPanel2() {
             // initialize results area
 
+            // initialize menu
+            JPanel menuPanel = new JPanel();
+            menuPanel.setLayout(new FlowLayout());
+            menuPanel.setPreferredSize(new Dimension(200, 0));
+            menuPanel.setBackground(Color.GRAY);
+            this.add(menuPanel, BorderLayout.LINE_START);
+
+            JLabel branchLabel = new JLabel("Branch ID:");
+            branchLabel.setFont(UserInterface.this.fontBtn);
+
+            JTextField ownerField = new JTextField(5);
+            ownerField.setFont(UserInterface.this.fontBtn);
+
+            JButton submitBtn = new JButton("Submit");
+            submitBtn.setFont(UserInterface.this.fontBtn);
+
+            menuPanel.add(branchLabel);
+            menuPanel.add(ownerField);
+            menuPanel.add(submitBtn);
+
             JPanel resultsPanel = new JPanel(new BorderLayout());
-            try {
-                // send query
-                String sql =
-                        "SELECT rental_id, street, city, zip" +
-                        "FROM Property" +
-                        "WHERE owner_id = arg_owner;";
-                Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                ResultSet result = stmt.executeQuery(sql);
 
-                // get column names
-                int colCount = result.getMetaData().getColumnCount();
-                String[] columns = new String[colCount];
-                for (int i = 0; i < result.getMetaData().getColumnCount(); i++){
-                    columns[i] = result.getMetaData().getColumnName(i + 1);
-                }
+            submitBtn.addActionListener(actionEvent -> {
+                try {
+                    // send query
+                    String sql =
+                            "SELECT rental_id, street, city, zip" +
+                            "FROM Property" +
+                            "WHERE owner_id = " + ownerField.getText();
+                    Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                    ResultSet result = stmt.executeQuery(sql);
 
-                // get data
-                result.last();
-                int rowCount = result.getRow();
-                result.beforeFirst();
-                String[][] data = new String[rowCount][colCount];
-                for (int i = 0; i < rowCount; i++) {
-                    result.next();
-                    for (int j = 0; j < colCount; j++) {
-                        data[i][j] = result.getString(j + 1);
+                    // get column names
+                    int colCount = result.getMetaData().getColumnCount();
+                    String[] columns = new String[colCount];
+                    for (int i = 0; i < result.getMetaData().getColumnCount(); i++){
+                        columns[i] = result.getMetaData().getColumnName(i + 1);
                     }
-                }
 
-                this.remove(this.resultsPane);
-                this.resultsPane = new JScrollPane(new JTable(data, columns));
-                this.add(this.resultsPane, BorderLayout.CENTER);
-                this.revalidate();
-                this.repaint();
-            } catch (SQLException e) {
-                System.out.println("Could not initialize procPanel[0]!");
-                System.out.println(e);
-                System.exit(1);
-            }
+                    // get data
+                    result.last();
+                    int rowCount = result.getRow();
+                    result.beforeFirst();
+                    String[][] data = new String[rowCount][colCount];
+                    for (int i = 0; i < rowCount; i++) {
+                        result.next();
+                        for (int j = 0; j < colCount; j++) {
+                            data[i][j] = result.getString(j + 1);
+                        }
+                    }
+
+                    this.remove(this.resultsPane);
+                    this.resultsPane = new JScrollPane(new JTable(data, columns));
+                    this.add(this.resultsPane, BorderLayout.CENTER);
+                    this.revalidate();
+                    this.repaint();
+                } catch (SQLException e) {
+                    System.out.println("Could not initialize procPanel[2]!");
+                    System.out.println(e);
+                    System.exit(1);
+                }
+            });
         }
     }
 
