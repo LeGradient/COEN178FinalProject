@@ -55,8 +55,8 @@ public class UserInterface extends JFrame implements ActionListener {
                     // get column names
                     int colCount = result.getMetaData().getColumnCount();
                     String[] columns = new String[colCount];
-                    for (int i = 1; i <= result.getMetaData().getColumnCount(); i++){
-                        columns[i-1] = result.getMetaData().getColumnName(i);
+                    for (int i = 0; i < result.getMetaData().getColumnCount(); i++){
+                        columns[i] = result.getMetaData().getColumnName(i + 1);
                     }
 
                     // get data
@@ -70,6 +70,9 @@ public class UserInterface extends JFrame implements ActionListener {
                             data[j][i] = result.getString(j + 1);
                         }
                     }
+                    System.out.println(colCount);
+                    System.out.println(rowCount);
+                    System.out.println(data);
                     this.add(new JTable(data, columns), BorderLayout.CENTER);
                     this.revalidate();
                     this.repaint();
