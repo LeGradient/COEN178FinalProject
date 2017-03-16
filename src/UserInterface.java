@@ -108,7 +108,7 @@ public class UserInterface extends JFrame implements ActionListener {
                         }
                     }
 
-                    this.remove(this.resultsPane);
+                    resultsPanel.remove(this.resultsPane);
                     this.resultsPane = new JScrollPane(new JTable(data, columns));
                     resultsPanel.add(this.resultsPane, BorderLayout.CENTER);
                     this.revalidate();
