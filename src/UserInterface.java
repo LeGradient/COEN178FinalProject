@@ -54,7 +54,8 @@ public class UserInterface extends JFrame implements ActionListener {
                     // get manager name
                     String sql = "SELECT name " +
                             "FROM Employee " +
-                            "WHERE branch_id = " + branchField.getText();
+                            "WHERE branch_id = " + branchField.getText() + " " +
+                            "AND job = 'manager'";
                     Statement stmt = UserInterface.this.connection.createStatement();
                     ResultSet managerResult = stmt.executeQuery(sql);
                     managerResult.next();
