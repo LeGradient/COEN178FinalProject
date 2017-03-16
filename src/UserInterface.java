@@ -1,9 +1,10 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Ellipse2D;
 import java.sql.*;
 import javax.swing.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class UserInterface extends JFrame implements ActionListener {
 
@@ -424,12 +425,147 @@ public class UserInterface extends JFrame implements ActionListener {
         }
     }
 
-    private class ProcPanel6 extends JPanel {
+    private class ProcPanel5 extends JPanel {
         private JScrollPane resultsPane = new JScrollPane();
 
-        // extra information to be displayed above the table
-        private JLabel resultsOwnerLabel = new JLabel("Owner");
+        public ProcPanel5() {
+            this.setLayout(new GridLayout(9, 1));
 
+            JPanel leaseIdPanel = new JPanel(new FlowLayout());
+            JLabel leaseIdLabel = new JLabel("Lease ID: ");
+            JTextField leaseIdField = new JTextField(5);
+            leaseIdPanel.add(leaseIdLabel);
+            leaseIdPanel.add(leaseIdField);
+
+            JPanel rentalIdPanel = new JPanel(new FlowLayout());
+            JLabel rentalIdLabel = new JLabel("Rental ID: ");
+            JTextField rentalIdField = new JTextField(5);
+            rentalIdPanel.add(rentalIdLabel);
+            rentalIdPanel.add(rentalIdField);
+
+            JPanel renterIdPanel = new JPanel(new FlowLayout());
+            JLabel renterIdLabel = new JLabel("Renter ID: ");
+            JTextField renterIdField = new JTextField(5);
+            renterIdPanel.add(renterIdLabel);
+            renterIdPanel.add(renterIdField);
+
+            JPanel friendNamePanel = new JPanel(new FlowLayout());
+            JLabel friendNameLabel = new JLabel("Friend Name: ");
+            JTextField friendNameField = new JTextField(30);
+            friendNamePanel.add(friendNameLabel);
+            friendNamePanel.add(friendNameField);
+
+            JPanel friendPhonePanel = new JPanel(new FlowLayout());
+            JLabel friendPhoneLabel = new JLabel("Friend Phone: ");
+            JTextField friendPhoneField = new JTextField(12);
+            friendPhonePanel.add(friendPhoneLabel);
+            friendPhonePanel.add(friendPhoneField);
+
+            JPanel startDatePanel = new JPanel(new FlowLayout());
+            JLabel startDateLabel = new JLabel("Start Date: ");
+            JTextField startDateField = new JTextField(9);
+            startDatePanel.add(startDateLabel);
+            startDatePanel.add(startDateField);
+
+            JPanel endDatePanel = new JPanel(new FlowLayout());
+            JLabel endDateLabel = new JLabel("End Date: ");
+            JTextField endDateField = new JTextField(9);
+            endDatePanel.add(endDateLabel);
+            endDatePanel.add(endDateField);
+
+            JLabel statusLabel = new JLabel();
+
+            JButton submitBtn = new JButton("Create Lease");
+            submitBtn.addActionListener(actionEvent -> {
+                // convert dates to SQL format
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
+                java.util.Date startDate, endDate;
+                java.sql.Date sqlStartDate, sqlEndDate;
+                try {
+                    startDate = dateFormat.parse(startDateField.getText());
+                    sqlStartDate = new java.sql.Date(startDate.getTime());
+                } catch (ParseException e) {
+                    System.out.println("Couldn't parse startDate!");
+                    System.out.println(e);
+                    return;
+                }
+                try {
+                    endDate = dateFormat.parse(endDateField.getText());
+                    sqlEndDate = new java.sql.Date(endDate.getTime());
+                } catch (ParseException e) {
+                    System.out.println("Couldn't parse endDate!");
+                    System.out.println(e);
+                    return;
+                }
+
+                // fetch status and monthly_rent
+                String status;
+                double monthly_rent;
+                double rent;
+                String selectSQL = "SELECT status, monthly_rent " +
+                        "FROM Property " +
+                        "WHERE rental_id = '" + leaseIdField.getText() + "'";
+                try {
+                    Statement stmt = UserInterface.this.connection.createStatement();
+                    ResultSet result = stmt.executeQuery(selectSQL);
+                    if (result.next()) {
+                        status = result.getString("status");
+                        monthly_rent = result.getDouble("monthly_rent");
+                    } else {
+                        System.out.println("No rows returned, couldn't get status and monthly_rent!");
+                        return;
+                    }
+                    if (status.compareToIgnoreCase("rented") == 0) {
+                        statusLabel.setText("Property already rented, cannot create lease!");
+                        return;
+                    }
+                    rent = monthly_rent * (endDate.getMonth() - startDate.getMonth());
+                } catch (SQLException e) {
+                    System.out.println("Couldn't query for status and monthly_rent!");
+                    System.out.println(e);
+                    return;
+                }
+
+                // create a new lease agreement
+                String insertSQL = "INSERT INTO LeaseAgreement VALUES (" +
+                        leaseIdField.getText() + ", " +
+                        rentalIdField.getText() + ", " +
+                        renterIdField.getText() + ", " +
+                        "'" + friendNameField.getText() + "', " +
+                        "'" + friendPhoneField.getText() + "', " +
+                        "'" + sqlStartDate.toString() + "', " +
+                        "'" + sqlEndDate.toString() + "', " +
+                        rent + ", " +
+                        monthly_rent + ")";
+                try {
+                    Statement stmt = UserInterface.this.connection.createStatement();
+                    int updates = stmt.executeUpdate(insertSQL);
+                    if (updates == 1) {
+                        statusLabel.setText("Lease created!");
+                    } else {
+                        statusLabel.setText("Lease not created!");
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Failed to insert new lease agreement!");
+                    System.out.println(e);
+                }
+            });
+
+            this.add(leaseIdPanel);
+            this.add(rentalIdPanel);
+            this.add(renterIdPanel);
+            this.add(friendNamePanel);
+            this.add(friendPhonePanel);
+            this.add(startDatePanel);
+            this.add(endDatePanel);
+            this.add(submitBtn);
+            this.add(statusLabel);
+        }
+    }
+           
+    private class ProcPanel6 extends JPanel {
+        private JScrollPane resultsPane = new JScrollPane();
+        private JLabel resultsOwnerLabel = new JLabel("Owner");
         public ProcPanel6() {
             this.setLayout(new BorderLayout());
 
