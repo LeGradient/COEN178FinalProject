@@ -18,6 +18,7 @@ public class UserInterface extends JFrame implements ActionListener {
 
 
     private class ProcPanel0 extends JPanel {
+        private JScrollPane resultsPane = new JScrollPane();
         public ProcPanel0() {
             this.setLayout(new BorderLayout());
 
@@ -73,7 +74,9 @@ public class UserInterface extends JFrame implements ActionListener {
                     System.out.println(colCount);
                     System.out.println(rowCount);
                     System.out.println(data);
-                    this.add(new JScrollPane(new JTable(data, columns)), BorderLayout.CENTER);
+                    this.remove(this.resultsPane);
+                    this.resultsPane = new JScrollPane(new JTable(data, columns));
+                    this.add(this.resultsPane, BorderLayout.CENTER);
                     this.revalidate();
                     this.repaint();
                 } catch (SQLException e) {
