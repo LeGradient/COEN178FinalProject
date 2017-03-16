@@ -129,27 +129,28 @@ public class UserInterface extends JFrame implements ActionListener {
         public ProcPanel1() {
             // initialize results area
 
-            // initialize menu
-            JPanel menuPanel = new JPanel();
-            menuPanel.setLayout(new FlowLayout());
-            menuPanel.setPreferredSize(new Dimension(200, 0));
-            menuPanel.setBackground(Color.GRAY);
-            this.add(menuPanel, BorderLayout.LINE_START);
+//            // initialize menu
+//            JPanel menuPanel = new JPanel();
+//            menuPanel.setLayout(new FlowLayout());
+//            menuPanel.setPreferredSize(new Dimension(200, 0));
+//            menuPanel.setBackground(Color.GRAY);
+//            this.add(menuPanel, BorderLayout.LINE_START);
+//
+//            JLabel branchLabel = new JLabel("Branch ID:");
+//            branchLabel.setFont(UserInterface.this.fontBtn);
+//
+//            JTextField branchField = new JTextField(5);
+//            branchField.setFont(UserInterface.this.fontBtn);
+//
+//            JButton submitBtn = new JButton("Submit");
+//            submitBtn.setFont(UserInterface.this.fontBtn);
+//
+//            menuPanel.add(branchLabel);
+//            menuPanel.add(branchField);
+//            menuPanel.add(submitBtn);
+//
+//            JPanel resultsPanel = new JPanel(new BorderLayout());
 
-            JLabel branchLabel = new JLabel("Branch ID:");
-            branchLabel.setFont(UserInterface.this.fontBtn);
-
-            JTextField branchField = new JTextField(5);
-            branchField.setFont(UserInterface.this.fontBtn);
-
-            JButton submitBtn = new JButton("Submit");
-            submitBtn.setFont(UserInterface.this.fontBtn);
-
-            menuPanel.add(branchLabel);
-            menuPanel.add(branchField);
-            menuPanel.add(submitBtn);
-
-            JPanel resultsPanel = new JPanel(new BorderLayout());
             try {
                 // send query
                 String sql = "SELECT " +
@@ -189,7 +190,7 @@ public class UserInterface extends JFrame implements ActionListener {
                 this.revalidate();
                 this.repaint();
             } catch (SQLException e) {
-                System.out.println("Could not initialize procPanel[0]!");
+                System.out.println("Could not initialize procPanel[1]!");
                 System.out.println(e);
                 System.exit(1);
             }
@@ -287,11 +288,8 @@ public class UserInterface extends JFrame implements ActionListener {
         // init panels
         this.procPanel[0] = new ProcPanel0();
         this.procPanel[1] = new ProcPanel1();
-        for (JPanel panel : this.procPanel) {
-            // anything that needs to happen to all panels
-        }
 
-        this.setSize(1400, 600);
+        this.setSize(1200, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -304,8 +302,10 @@ public class UserInterface extends JFrame implements ActionListener {
         if (this.indexPrev != -1) {
             this.getContentPane().remove(procPanel[this.indexPrev]);
         }
+        this.indexPrev = index;
         this.getContentPane().add(procPanel[index], BorderLayout.CENTER);
         this.getContentPane().revalidate();
+        this.getContentPane().repaint();
     }
 
 
