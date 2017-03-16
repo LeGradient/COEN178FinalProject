@@ -21,10 +21,6 @@ public class UserInterface extends JFrame implements ActionListener {
         public ProcPanel0() {
             this.setLayout(new BorderLayout());
 
-            JTextArea resultArea = new JTextArea("results will be shown here");
-            resultArea.setFont(fontMono);
-            this.add(resultArea, BorderLayout.CENTER);
-
             JPanel subpanel1 = new JPanel();
             subpanel1.setLayout(new FlowLayout());
             subpanel1.setPreferredSize(new Dimension(200, 0));
@@ -44,27 +40,36 @@ public class UserInterface extends JFrame implements ActionListener {
             submitBtn.addActionListener(actionEvent -> {
                 String arg = branchField.getText();
                 try {
+                    // send query
                     String sql = "SELECT rental_id, street, city, zip " +
-                            "FROM Property " +
-                            "WHERE supervisor_id IN (" +
-                            "SELECT emp_id " +
-                            "FROM Employee " +
-                            "WHERE branch_id = " + branchField.getText() +
-                            ")";
+                                "FROM Property " +
+                                "WHERE supervisor_id IN (" +
+                                    "SELECT emp_id " +
+                                    "FROM Employee " +
+                                    "WHERE branch_id = " + branchField.getText() +
+                                ")";
                     Statement stmt = UserInterface.this.connection.createStatement();
                     ResultSet result = stmt.executeQuery(sql);
-                    String columns = "";
+
+                    // get column names
+                    int colCount = result.getMetaData().getColumnCount();
+                    String[] columns = new String[colCount];
                     for (int i = 1; i <= result.getMetaData().getColumnCount(); i++){
-                        columns += result.getMetaData().getColumnName(i);
+                        columns[i] = result.getMetaData().getColumnName(i);
                     }
-                    resultArea.setText(columns + "\n");
-                    while (result.next()) {
-                        String rental_id = result.getString("rental_id");
-                        String street = result.getString("street");
-                        String city = result.getString("city");
-                        String zip = result.getString("zip");
-                        resultArea.append(rental_id + " " + street + " " + city + " " + zip + "\n");
+
+                    // get data
+                    result.last();
+                    int rowCount = result.getRow();
+                    result.beforeFirst();
+                    String[][] data = new String[colCount][rowCount];
+                    for (int i = 0; i < rowCount; i++) {
+                        result.next();
+                        for (int j = 0; j < colCount; j++) {
+                            data[j][i] = result.getString(j + 1);
+                        }
                     }
+                    this.add(new JTable(data, columns), BorderLayout.CENTER);
                 } catch (SQLException e) {
                     System.out.println("Could not initialize procPanel[0]!");
                     System.out.println(e);
@@ -122,7 +127,7 @@ public class UserInterface extends JFrame implements ActionListener {
             // anything that needs to happen to all panels
         }
 
-        this.setSize(1000, 600);
+        this.setSize(1400, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
