@@ -190,7 +190,8 @@ public class UserInterface extends JFrame implements ActionListener {
                 this.revalidate();
                 this.repaint();
             } catch (SQLException e) {
-                System.out.println("Could not initialize procPanel[1]!");
+                System.out.println("Could not initialize procPanel[0]!");
+
                 System.out.println(e);
                 System.exit(1);
             }
