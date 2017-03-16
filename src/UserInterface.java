@@ -27,27 +27,31 @@ public class UserInterface extends JFrame implements ActionListener {
         public ProcPanel0() {
             this.setLayout(new BorderLayout());
 
-            JPanel subpanel1 = new JPanel();
-            subpanel1.setLayout(new FlowLayout());
-            subpanel1.setPreferredSize(new Dimension(200, 0));
-            subpanel1.setBackground(Color.GRAY);
-            this.add(subpanel1, BorderLayout.LINE_START);
+            // initialize menu
+            JPanel menuPanel = new JPanel();
+            menuPanel.setLayout(new FlowLayout());
+            menuPanel.setPreferredSize(new Dimension(200, 0));
+            menuPanel.setBackground(Color.GRAY);
+            this.add(menuPanel, BorderLayout.LINE_START);
 
             JLabel branchLabel = new JLabel("Branch ID:");
             branchLabel.setFont(UserInterface.this.fontBtn);
-            subpanel1.add(branchLabel);
 
             JTextField branchField = new JTextField(5);
             branchField.setFont(UserInterface.this.fontBtn);
-            subpanel1.add(branchField);
 
             JButton submitBtn = new JButton("Submit");
             submitBtn.setFont(UserInterface.this.fontBtn);
-            subpanel1.add(submitBtn);
 
+            menuPanel.add(branchLabel);
+            menuPanel.add(branchField);
+            menuPanel.add(submitBtn);
+
+            // initialize results area
             JPanel resultsPanel = new JPanel(new GridLayout(3, 1));
             resultsPanel.add(resultsBranchLabel);
             resultsPanel.add(resultsManagerLabel);
+            this.add(resultsPanel, BorderLayout.CENTER);
 
             submitBtn.addActionListener(actionEvent -> {
                 this.resultsBranchLabel.setText("Branch ID: " + branchField.getText());
