@@ -35,7 +35,7 @@ public class UserInterface extends JFrame implements ActionListener {
             branchLabel.setFont(UserInterface.this.fontBtn);
             subpanel1.add(branchLabel);
 
-            final JTextField branchField = new JTextField(5);
+            JTextField branchField = new JTextField(5);
             branchField.setFont(UserInterface.this.fontBtn);
             subpanel1.add(branchField);
 
@@ -53,8 +53,17 @@ public class UserInterface extends JFrame implements ActionListener {
                             ")";
                     Statement stmt = UserInterface.this.connection.createStatement();
                     ResultSet result = stmt.executeQuery(sql);
+                    String columns = "";
+                    for (int i = 0; i < result.getMetaData().getColumnCount(); i++){
+                        columns += result.getMetaData().getColumnName(i);
+                    }
+                    resultArea.setText(columns + "\n");
                     while (result.next()) {
-                        resultArea.setText(result.getString("rental_id"));
+                        String rental_id = result.getString("rental_id");
+                        String street = result.getString("street");
+                        String city = result.getString("city");
+                        String zip = result.getString("zip");
+                        resultArea.append(rental_id + " " + street + " " + city + " " + zip + "\n");
                     }
                 } catch (SQLException e) {
                     System.out.println("Could not initialize procPanel[0]!");
@@ -67,54 +76,7 @@ public class UserInterface extends JFrame implements ActionListener {
     }
 
 
-    private void initProcPanel0() {
-        this.procPanel[0] = new JPanel();
-        this.procPanel[0].setLayout(new BorderLayout());
-        //this.procPanel[0].setPreferredSize(new Dimension(300, 600));
 
-        JTextArea resultArea = new JTextArea("results will be shown here");
-        resultArea.setFont(fontMono);
-        this.procPanel[0].add(resultArea, BorderLayout.CENTER);
-
-        JPanel subpanel1 = new JPanel();
-        subpanel1.setLayout(new FlowLayout());
-        subpanel1.setPreferredSize(new Dimension(200, 0));
-        subpanel1.setBackground(Color.GRAY);
-        this.procPanel[0].add(subpanel1, BorderLayout.LINE_START);
-
-        JLabel branchLabel = new JLabel("Branch ID:");
-        branchLabel.setFont(this.fontBtn);
-        subpanel1.add(branchLabel);
-
-        final JTextField branchField = new JTextField(5);
-        branchField.setFont(this.fontBtn);
-        subpanel1.add(branchField);
-
-        JButton submitBtn = new JButton("Submit");
-        submitBtn.setFont(this.fontBtn);
-        submitBtn.addActionListener(actionEvent -> {
-            String arg = branchField.getText();
-            try {
-                String sql = "SELECT rental_id, street, city, zip " +
-                            "FROM Property " +
-                            "WHERE supervisor_id IN (" +
-                                "SELECT emp_id " +
-                                "FROM Employee " +
-                                "WHERE branch_id = " + branchField.getText() +
-                            ")";
-                Statement stmt = this.connection.createStatement();
-                ResultSet result = stmt.executeQuery(sql);
-                while (result.next()) {
-                    resultArea.setText(result.getString("rental_id"));
-                }
-            } catch (SQLException e) {
-                System.out.println("Could not initialize procPanel[0]!");
-                System.out.println(e);
-                System.exit(1);
-            }
-        });
-        subpanel1.add(submitBtn);
-    }
 
 
     public UserInterface() {
