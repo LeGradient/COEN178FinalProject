@@ -122,6 +122,7 @@ public class UserInterface extends JFrame implements ActionListener {
         }
     }
 
+
     private class ProcPanel1 extends JPanel {
         private JScrollPane resultsPane = new JScrollPane();
 
@@ -176,7 +177,7 @@ public class UserInterface extends JFrame implements ActionListener {
     }
 
 
-
+    private int indexPrev = -1;
 
     public UserInterface() {
         try {
@@ -231,6 +232,9 @@ public class UserInterface extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent event) {
         int index = Integer.parseInt(event.getActionCommand());
+        if (this.indexPrev != -1) {
+            this.getContentPane().remove(procPanel[this.indexPrev]);
+        }
         this.getContentPane().add(procPanel[index], BorderLayout.CENTER);
         this.getContentPane().revalidate();
     }
