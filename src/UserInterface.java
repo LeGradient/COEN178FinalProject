@@ -73,7 +73,7 @@ public class UserInterface extends JFrame implements ActionListener {
                     System.out.println(colCount);
                     System.out.println(rowCount);
                     System.out.println(data);
-                    this.add(new JTable(data, columns), BorderLayout.CENTER);
+                    this.add(new JScrollPane(new JTable(data, columns)), BorderLayout.CENTER);
                     this.revalidate();
                     this.repaint();
                 } catch (SQLException e) {
