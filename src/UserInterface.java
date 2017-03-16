@@ -535,7 +535,7 @@ public class UserInterface extends JFrame implements ActionListener {
                         "'" + friendPhoneField.getText() + "', " +
                         "'" + startDateField.getText() + "', " +
                         "'" + endDateField.getText() + "', " +
-                        rent + ", " +
+                        "MONTHS_BETWEEN('" + endDateField.getText() + "', '" + startDateField.getText() + "'), " +
                         monthly_rent + ")";
                 try {
                     Statement stmt = UserInterface.this.connection.createStatement();
