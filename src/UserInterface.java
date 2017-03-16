@@ -423,13 +423,13 @@ public class UserInterface extends JFrame implements ActionListener {
         }
     }
 
-    private class ProcPanel5 extends JPanel {
+    private class ProcPanel6 extends JPanel {
         private JScrollPane resultsPane = new JScrollPane();
 
         // extra information to be displayed above the table
         private JLabel resultsOwnerLabel = new JLabel("Owner");
 
-        public ProcPanel5() {
+        public ProcPanel6() {
             this.setLayout(new BorderLayout());
 
             // initialize menu
@@ -508,7 +508,113 @@ public class UserInterface extends JFrame implements ActionListener {
         }
     }
 
-           
+    private class ProcPanel7 extends JPanel {
+        private JScrollPane resultsPane = new JScrollPane();
+
+        public ProcPanel7() {
+            // initialize results area
+
+            JPanel resultsPanel = new JPanel(new BorderLayout());
+
+            try {
+                // send query
+                String sql =  "SELECT renter_id, name " +
+                        "    FROM Renters " +
+                        "    WHERE renter_id IN ( " +
+                        "        SELECT renter_id " +
+                        "        FROM LeaseAgreement " +
+                        "        GROUP BY renter_id " +
+                        "        HAVING COUNT(*) > 1 " +
+                        ")";
+                Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                ResultSet result = stmt.executeQuery(sql);
+
+                // get column names
+                int colCount = result.getMetaData().getColumnCount();
+                String[] columns = new String[colCount];
+                for (int i = 0; i < result.getMetaData().getColumnCount(); i++){
+                    columns[i] = result.getMetaData().getColumnName(i + 1);
+                }
+
+                // get data
+                result.last();
+                int rowCount = result.getRow();
+                result.beforeFirst();
+                String[][] data = new String[rowCount][colCount];
+                for (int i = 0; i < rowCount; i++) {
+                    result.next();
+                    for (int j = 0; j < colCount; j++) {
+                        data[i][j] = result.getString(j + 1);
+                    }
+                }
+
+                this.remove(this.resultsPane);
+                this.resultsPane = new JScrollPane(new JTable(data, columns));
+                this.add(this.resultsPane, BorderLayout.CENTER);
+                this.revalidate();
+                this.repaint();
+            } catch (SQLException e) {
+                System.out.println("Could not initialize procPanel[1]!");
+
+                System.out.println(e);
+                System.exit(1);
+            }
+        }
+    }
+
+    private class ProcPanel9 extends JPanel {
+        private JScrollPane resultsPane = new JScrollPane();
+
+        public ProcPanel9() {
+            // initialize results area
+
+            JPanel resultsPanel = new JPanel(new BorderLayout());
+
+            try {
+                // send query
+                String sql = "SELECT lease_id, Property.rental_id, street, city, zip " +
+                        "FROM Property JOIN LeaseAgreement " +
+                        "ON Property.rental_id = LeaseAgreement.rental_id " +
+                        "WHERE MONTHS_BETWEEN(date_end, SYSDATE) <= 2";
+                Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                ResultSet result = stmt.executeQuery(sql);
+
+                // get column names
+                int colCount = result.getMetaData().getColumnCount();
+                String[] columns = new String[colCount];
+                for (int i = 0; i < result.getMetaData().getColumnCount(); i++){
+                    columns[i] = result.getMetaData().getColumnName(i + 1);
+                }
+
+                // get data
+                result.last();
+                int rowCount = result.getRow();
+                result.beforeFirst();
+                String[][] data = new String[rowCount][colCount];
+                for (int i = 0; i < rowCount; i++) {
+                    result.next();
+                    for (int j = 0; j < colCount; j++) {
+                        data[i][j] = result.getString(j + 1);
+                    }
+                }
+
+                this.remove(this.resultsPane);
+                this.resultsPane = new JScrollPane(new JTable(data, columns));
+                this.add(this.resultsPane, BorderLayout.CENTER);
+                this.revalidate();
+                this.repaint();
+            } catch (SQLException e) {
+                System.out.println("Could not initialize procPanel[1]!");
+
+                System.out.println(e);
+                System.exit(1);
+            }
+        }
+    }
+
+
+
+
 
 
 
@@ -556,6 +662,9 @@ public class UserInterface extends JFrame implements ActionListener {
         this.procPanel[2] = new ProcPanel2();
         this.procPanel[3] = new ProcPanel3();
         this.procPanel[4] = new ProcPanel4();
+        this.procPanel[6] = new ProcPanel6();
+        this.procPanel[7] = new ProcPanel7();
+        this.procPanel[9] = new ProcPanel9();
         
         this.setSize(1200, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
