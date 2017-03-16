@@ -561,6 +561,110 @@ public class UserInterface extends JFrame implements ActionListener {
             }
         }
     }
+    private class ProcPanel8 extends JPanel {
+        private JScrollPane resultsPane = new JScrollPane();
+
+        // extra information to be displayed above the table
+        private JLabel resultsOwnerLabel = new JLabel("Owner");
+        public ProcPanel8() {
+            this.setLayout(new BorderLayout());
+
+            // initialize menu
+            JPanel menuPanel = new JPanel();
+            menuPanel.setLayout(new FlowLayout());
+            menuPanel.setPreferredSize(new Dimension(200, 0));
+            menuPanel.setBackground(Color.GRAY);
+            this.add(menuPanel, BorderLayout.LINE_START);
+
+            JLabel cityLabel = new JLabel("City: ");
+            cityLabel.setFont(UserInterface.this.fontBtn);
+
+            JTextField cityField = new JTextField(5);
+            cityField.setFont(UserInterface.this.fontBtn);
+
+            JButton submitBtn = new JButton("Submit");
+            submitBtn.setFont(UserInterface.this.fontBtn);
+
+            menuPanel.add(cityLabel);
+            menuPanel.add(cityField);
+            menuPanel.add(submitBtn);
+
+            // initialize results area
+            JPanel resultsPanel = new JPanel(new BorderLayout());
+            JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+            JLabel leasedRent = new JLabel();
+            JLabel availableRent = new JLabel();
+            JLabel rentAverage = new JLabel();
+            JLabel city = new JLabel();
+            labelPanel.add(city);
+            labelPanel.add(leasedRent);
+            labelPanel.add(availableRent);
+            labelPanel.add(rentAverage);
+            resultsPanel.add(labelPanel, BorderLayout.PAGE_START);
+            this.add(resultsPanel, BorderLayout.CENTER);
+
+            submitBtn.addActionListener(actionEvent -> {
+                city.setText("City: " + cityField.getText());
+
+                // get manager name
+                try {
+                    String sql = "SELECT AVG(monthly_rent) " +
+                            "INTO var_avgrent_leased " +
+                            "FROM Property " +
+                            "WHERE status = 'leased' " +
+                            "AND city = " + cityField.getText();
+                    Statement stmt = UserInterface.this.connection.createStatement();
+                    ResultSet managerResult = stmt.executeQuery(sql);
+                    leasedRent.setText("Leased Rent: " + managerResult.getString(0));
+                } catch (SQLException e) {
+                    System.out.println(e);
+                    System.out.println("Couldn't get manager name!");
+                }
+
+                // get available properties
+                try {
+                    // send query
+                    String sql = "SELECT AVG(monthly_rent) " +
+                            "INTO var_avgrent_available " +
+                            "FROM Property\n" +
+                            "WHERE status = 'available' " +
+                            "AND city = " + cityField.getText();
+                    Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                    ResultSet result = stmt.executeQuery(sql);
+                    availableRent.setText("Available Rent: " + result.getString(0));
+
+                    // get column names
+                    int colCount = result.getMetaData().getColumnCount();
+                    String[] columns = new String[colCount];
+                    for (int i = 0; i < result.getMetaData().getColumnCount(); i++) {
+                        columns[i] = result.getMetaData().getColumnName(i + 1);
+                    }
+
+                    // get data
+                    result.last();
+                    int rowCount = result.getRow();
+                    result.beforeFirst();
+                    String[][] data = new String[rowCount][colCount];
+                    for (int i = 0; i < rowCount; i++) {
+                        result.next();
+                        for (int j = 0; j < colCount; j++) {
+                            data[i][j] = result.getString(j + 1);
+                        }
+                    }
+                    resultsPanel.remove(this.resultsPane);
+                    this.resultsPane = new JScrollPane(new JTable(data, columns));
+                    resultsPanel.add(this.resultsPane, BorderLayout.CENTER);
+                    this.revalidate();
+                    this.repaint();
+                } catch (SQLException e) {
+                    System.out.println("Could not initialize procPanel[0]!");
+                    System.out.println(e);
+                    System.exit(1);
+                }
+            });
+        }
+    }
+
 
     private class ProcPanel9 extends JPanel {
         private JScrollPane resultsPane = new JScrollPane();
@@ -664,6 +768,7 @@ public class UserInterface extends JFrame implements ActionListener {
         this.procPanel[4] = new ProcPanel4();
         this.procPanel[6] = new ProcPanel6();
         this.procPanel[7] = new ProcPanel7();
+        this.procPanel[8] = new ProcPanel8();
         this.procPanel[9] = new ProcPanel9();
         
         this.setSize(1200, 600);
