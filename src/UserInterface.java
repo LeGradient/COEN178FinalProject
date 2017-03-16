@@ -49,14 +49,14 @@ public class UserInterface extends JFrame implements ActionListener {
                                     "FROM Employee " +
                                     "WHERE branch_id = " + branchField.getText() +
                                 ")";
-                    Statement stmt = UserInterface.this.connection.createStatement();
+                    Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                     ResultSet result = stmt.executeQuery(sql);
 
                     // get column names
                     int colCount = result.getMetaData().getColumnCount();
                     String[] columns = new String[colCount];
                     for (int i = 1; i <= result.getMetaData().getColumnCount(); i++){
-                        columns[i] = result.getMetaData().getColumnName(i);
+                        columns[i-1] = result.getMetaData().getColumnName(i);
                     }
 
                     // get data
