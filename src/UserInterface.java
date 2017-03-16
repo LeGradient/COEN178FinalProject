@@ -269,7 +269,7 @@ public class UserInterface extends JFrame implements ActionListener {
         private JScrollPane resultsPane = new JScrollPane();
         
         // extra information to be displayed above the table
-        private JLabel resultsOwnerLabel = new JLabel("Owner");
+        //private JLabel resultsOwnerLabel = new JLabel("Owner");
 
         public ProcPanel3() {
             this.setLayout(new BorderLayout());
@@ -320,9 +320,9 @@ public class UserInterface extends JFrame implements ActionListener {
 
             // initialize results area
             JPanel resultsPanel = new JPanel(new BorderLayout());
-            JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-            labelPanel.add(resultsOwnerLabel);
-            resultsPanel.add(labelPanel, BorderLayout.PAGE_START);
+            //JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+            //labelPanel.add(resultsOwnerLabel);
+            //resultsPanel.add(labelPanel, BorderLayout.PAGE_START);
             this.add(resultsPanel, BorderLayout.CENTER);
 
             submitBtn.addActionListener(actionEvent -> {
