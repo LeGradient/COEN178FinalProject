@@ -423,6 +423,90 @@ public class UserInterface extends JFrame implements ActionListener {
         }
     }
 
+    private class ProcPanel5 extends JPanel {
+        private JScrollPane resultsPane = new JScrollPane();
+
+        // extra information to be displayed above the table
+        private JLabel resultsOwnerLabel = new JLabel("Owner");
+
+        public ProcPanel5() {
+            this.setLayout(new BorderLayout());
+
+            // initialize menu
+            JPanel menuPanel = new JPanel();
+            menuPanel.setLayout(new FlowLayout());
+            menuPanel.setPreferredSize(new Dimension(200, 0));
+            menuPanel.setBackground(Color.GRAY);
+            this.add(menuPanel, BorderLayout.LINE_START);
+
+            JLabel renterLabel = new JLabel("Renter: ");
+            renterLabel.setFont(UserInterface.this.fontBtn);
+
+            JTextField renterField = new JTextField(5);
+            renterField.setFont(UserInterface.this.fontBtn);
+
+            JButton submitBtn = new JButton("Submit");
+            submitBtn.setFont(UserInterface.this.fontBtn);
+
+            menuPanel.add(renterLabel);
+            menuPanel.add(renterField);
+            menuPanel.add(submitBtn);
+
+            // initialize results area
+            JPanel resultsPanel = new JPanel(new BorderLayout());
+            JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+            labelPanel.add(resultsOwnerLabel);
+            resultsPanel.add(labelPanel, BorderLayout.PAGE_START);
+            this.add(resultsPanel, BorderLayout.CENTER);
+
+            submitBtn.addActionListener(actionEvent -> {
+
+
+                // get owners name
+                this.resultsOwnerLabel.setText("Renter ID: " + renterField.getText());
+
+
+                // get available properties
+                try {
+                    // send query
+                    String sql = "SELECT * " +
+                            "FROM LeaseAgreement " +
+                            "WHERE renter_id = " + renterField.getText();
+                    Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                    ResultSet result = stmt.executeQuery(sql);
+
+                    // get column names
+                    int colCount = result.getMetaData().getColumnCount();
+                    String[] columns = new String[colCount];
+                    for (int i = 0; i < result.getMetaData().getColumnCount(); i++){
+                        columns[i] = result.getMetaData().getColumnName(i + 1);
+                    }
+
+                    // get data
+                    result.last();
+                    int rowCount = result.getRow();
+                    result.beforeFirst();
+                    String[][] data = new String[rowCount][colCount];
+                    for (int i = 0; i < rowCount; i++) {
+                        result.next();
+                        for (int j = 0; j < colCount; j++) {
+                            data[i][j] = result.getString(j + 1);
+                        }
+                    }
+
+                    resultsPanel.remove(this.resultsPane);
+                    this.resultsPane = new JScrollPane(new JTable(data, columns));
+                    resultsPanel.add(this.resultsPane, BorderLayout.CENTER);
+                    this.revalidate();
+                    this.repaint();
+                } catch (SQLException e) {
+                    System.out.println("Could not initialize procPanel[0]!");
+                    System.out.println(e);
+                    System.exit(1);
+                }
+            });
+        }
+    }
 
            
 
