@@ -48,11 +48,11 @@ public class UserInterface extends JFrame implements ActionListener {
             menuPanel.add(submitBtn);
 
             // initialize results area
-            JPanel resultsPanel = new JPanel(new GridLayout(2, 1));
-            JPanel labelPanel = new JPanel(new FlowLayout());
+            JPanel resultsPanel = new JPanel(new BorderLayout());
+            JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
             labelPanel.add(resultsBranchLabel);
             labelPanel.add(resultsManagerLabel);
-            resultsPanel.add(labelPanel);
+            resultsPanel.add(labelPanel, BorderLayout.PAGE_START);
             this.add(resultsPanel, BorderLayout.CENTER);
 
             submitBtn.addActionListener(actionEvent -> {
@@ -110,7 +110,7 @@ public class UserInterface extends JFrame implements ActionListener {
 
                     this.remove(this.resultsPane);
                     this.resultsPane = new JScrollPane(new JTable(data, columns));
-                    resultsPanel.add(this.resultsPane);
+                    resultsPanel.add(this.resultsPane, BorderLayout.CENTER);
                     this.revalidate();
                     this.repaint();
                 } catch (SQLException e) {
