@@ -911,6 +911,7 @@ public class UserInterface extends JFrame implements ActionListener {
         this.procPanel[2] = new ProcPanel2();
         this.procPanel[3] = new ProcPanel3();
         this.procPanel[4] = new ProcPanel4();
+        this.procPanel[5] = new ProcPanel5();
         this.procPanel[6] = new ProcPanel6();
         this.procPanel[7] = new ProcPanel7();
         this.procPanel[8] = new ProcPanel8();
