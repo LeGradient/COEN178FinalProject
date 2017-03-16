@@ -37,8 +37,9 @@ public class UserInterface extends JFrame implements ActionListener {
 
             JButton submitBtn = new JButton("Submit");
             submitBtn.setFont(UserInterface.this.fontBtn);
+            subpanel1.add(submitBtn);
+
             submitBtn.addActionListener(actionEvent -> {
-                String arg = branchField.getText();
                 try {
                     // send query
                     String sql = "SELECT rental_id, street, city, zip " +
@@ -76,7 +77,6 @@ public class UserInterface extends JFrame implements ActionListener {
                     System.exit(1);
                 }
             });
-            subpanel1.add(submitBtn);
         }
     }
 
