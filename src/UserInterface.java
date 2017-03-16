@@ -19,6 +19,11 @@ public class UserInterface extends JFrame implements ActionListener {
 
     private class ProcPanel0 extends JPanel {
         private JScrollPane resultsPane = new JScrollPane();
+
+        // extra information to be displayed above the table
+        private JLabel resultsBranchLabel = new JLabel("Branch ID: ");
+        private JLabel resultsManagerLabel = new JLabel("Manager: ");
+
         public ProcPanel0() {
             this.setLayout(new BorderLayout());
 
@@ -40,17 +45,28 @@ public class UserInterface extends JFrame implements ActionListener {
             submitBtn.setFont(UserInterface.this.fontBtn);
             subpanel1.add(submitBtn);
 
+            JPanel resultsPanel = new JPanel(new GridLayout(3, 1));
+            resultsPanel.add(resultsBranchLabel);
+            resultsPanel.add(resultsManagerLabel);
+
             submitBtn.addActionListener(actionEvent -> {
                 try {
+                    // get manager name
+                    String sql = "SELECT name " +
+                            "FROM Employee " +
+                            "WHERE branch_id = " + branchField.getText();
+                    Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                    String managerName = stmt.executeQuery(sql).getString("name");
+
                     // send query
-                    String sql = "SELECT rental_id, street, city, zip " +
+                    sql = "SELECT rental_id, street, city, zip " +
                                 "FROM Property " +
                                 "WHERE supervisor_id IN (" +
                                     "SELECT emp_id " +
                                     "FROM Employee " +
                                     "WHERE branch_id = " + branchField.getText() +
                                 ")";
-                    Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                    stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                     ResultSet result = stmt.executeQuery(sql);
 
                     // get column names
@@ -71,12 +87,11 @@ public class UserInterface extends JFrame implements ActionListener {
                             data[i][j] = result.getString(j + 1);
                         }
                     }
-                    System.out.println(colCount);
-                    System.out.println(rowCount);
-                    System.out.println(data);
+                    this.resultsBranchLabel.setText("Branch ID: " + branchField.getText());
+                    this.resultsManagerLabel.setText("Manager: " + managerName);
                     this.remove(this.resultsPane);
                     this.resultsPane = new JScrollPane(new JTable(data, columns));
-                    this.add(this.resultsPane, BorderLayout.CENTER);
+                    resultsPanel.add(this.resultsPane);
                     this.revalidate();
                     this.repaint();
                 } catch (SQLException e) {
