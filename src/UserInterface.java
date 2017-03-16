@@ -698,6 +698,8 @@ public class UserInterface extends JFrame implements ActionListener {
             }
         }
     }
+
+    Double sum = 0.0;
     private class ProcPanel8 extends JPanel {
         private JScrollPane resultsPane = new JScrollPane();
 
@@ -752,7 +754,8 @@ public class UserInterface extends JFrame implements ActionListener {
                     Statement stmt = UserInterface.this.connection.createStatement();
                     ResultSet result = stmt.executeQuery(sql);
                     if(result.next()) {
-                        leasedRent.setText("Leased Rent: " + result.getString(0));
+                        leasedRent.setText("Leased Rent: " + result.getDouble(1));
+                        sum += result.getDouble(1);
                     }
                     } catch (SQLException e) {
                     System.out.println(e);
@@ -769,10 +772,12 @@ public class UserInterface extends JFrame implements ActionListener {
                     Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                     ResultSet result = stmt.executeQuery(sql);
                     if(result.next()) {
-                        availableRent.setText("Available Rent: " + result.getString(0));
+                        availableRent.setText("Available Rent: " + result.getDouble(1));
+                        sum += result.getDouble(1);
                     }
 
-                    rentAverage.setText("Average:" + ((Double.parseDouble(leasedRent.getText()) + Double.parseDouble(availableRent.getText()))/2));
+                    rentAverage.setText("Average:" + (sum/2));
+                    sum = 0.0;
                     // get column names
                     int colCount = result.getMetaData().getColumnCount();
                     String[] columns = new String[colCount];
