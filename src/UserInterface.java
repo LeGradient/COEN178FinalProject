@@ -478,25 +478,25 @@ public class UserInterface extends JFrame implements ActionListener {
             JButton submitBtn = new JButton("Create Lease");
             submitBtn.addActionListener(actionEvent -> {
                 // convert dates to SQL format
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
-                java.util.Date startDate, endDate;
-                java.sql.Date sqlStartDate, sqlEndDate;
-                try {
-                    startDate = dateFormat.parse(startDateField.getText());
-                    sqlStartDate = new java.sql.Date(startDate.getTime());
-                } catch (ParseException e) {
-                    System.out.println("Couldn't parse startDate!");
-                    System.out.println(e);
-                    return;
-                }
-                try {
-                    endDate = dateFormat.parse(endDateField.getText());
-                    sqlEndDate = new java.sql.Date(endDate.getTime());
-                } catch (ParseException e) {
-                    System.out.println("Couldn't parse endDate!");
-                    System.out.println(e);
-                    return;
-                }
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
+//                java.util.Date startDate, endDate;
+//                java.sql.Date sqlStartDate, sqlEndDate;
+//                try {
+//                    startDate = dateFormat.parse(startDateField.getText());
+//                    sqlStartDate = new java.sql.Date(startDate.getTime());
+//                } catch (ParseException e) {
+//                    System.out.println("Couldn't parse startDate!");
+//                    System.out.println(e);
+//                    return;
+//                }
+//                try {
+//                    endDate = dateFormat.parse(endDateField.getText());
+//                    sqlEndDate = new java.sql.Date(endDate.getTime());
+//                } catch (ParseException e) {
+//                    System.out.println("Couldn't parse endDate!");
+//                    System.out.println(e);
+//                    return;
+//                }
 
                 // fetch status and monthly_rent
                 String status;
@@ -519,7 +519,7 @@ public class UserInterface extends JFrame implements ActionListener {
                         statusLabel.setText("Property already rented, cannot create lease!");
                         return;
                     }
-                    rent = monthly_rent * (endDate.getMonth() - startDate.getMonth());
+                    rent = 10000;//monthly_rent * (endDate.getMonth() - startDate.getMonth());
                 } catch (SQLException e) {
                     System.out.println("Couldn't query for status and monthly_rent!");
                     System.out.println(e);
@@ -533,8 +533,8 @@ public class UserInterface extends JFrame implements ActionListener {
                         renterIdField.getText() + ", " +
                         "'" + friendNameField.getText() + "', " +
                         "'" + friendPhoneField.getText() + "', " +
-                        "'" + sqlStartDate.toString() + "', " +
-                        "'" + sqlEndDate.toString() + "', " +
+                        "'" + startDateField.getText() + "', " +
+                        "'" + endDateField.getText() + "', " +
                         rent + ", " +
                         monthly_rent + ")";
                 try {
