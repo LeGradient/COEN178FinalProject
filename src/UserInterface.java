@@ -63,11 +63,11 @@ public class UserInterface extends JFrame implements ActionListener {
                     result.last();
                     int rowCount = result.getRow();
                     result.beforeFirst();
-                    String[][] data = new String[colCount][rowCount];
+                    String[][] data = new String[rowCount][colCount];
                     for (int i = 0; i < rowCount; i++) {
                         result.next();
                         for (int j = 0; j < colCount; j++) {
-                            data[j][i] = result.getString(j + 1);
+                            data[i][j] = result.getString(j + 1);
                         }
                     }
                     System.out.println(colCount);
