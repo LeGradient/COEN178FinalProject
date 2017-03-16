@@ -137,7 +137,7 @@ public class UserInterface extends JFrame implements ActionListener {
                         "Property.rental_id, " +
                         "Property.street, " +
                         "Property.city, " +
-                        "Property.zip" +
+                        "Property.zip, " +
                         "FROM Property JOIN Employee " +
                         "ON Property.supervisor_id = Employee.emp_id";
                 Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
