@@ -17,6 +17,56 @@ public class UserInterface extends JFrame implements ActionListener {
     Font fontMono = new Font(Font.MONOSPACED, Font.PLAIN, 24);
 
 
+    private class ProcPanel0 extends JPanel {
+        public ProcPanel0() {
+            this.setLayout(new BorderLayout());
+
+            JTextArea resultArea = new JTextArea("results will be shown here");
+            resultArea.setFont(fontMono);
+            this.add(resultArea, BorderLayout.CENTER);
+
+            JPanel subpanel1 = new JPanel();
+            subpanel1.setLayout(new FlowLayout());
+            subpanel1.setPreferredSize(new Dimension(200, 0));
+            subpanel1.setBackground(Color.GRAY);
+            this.add(subpanel1, BorderLayout.LINE_START);
+
+            JLabel branchLabel = new JLabel("Branch ID:");
+            branchLabel.setFont(UserInterface.this.fontBtn);
+            subpanel1.add(branchLabel);
+
+            final JTextField branchField = new JTextField(5);
+            branchField.setFont(UserInterface.this.fontBtn);
+            subpanel1.add(branchField);
+
+            JButton submitBtn = new JButton("Submit");
+            submitBtn.setFont(UserInterface.this.fontBtn);
+            submitBtn.addActionListener(actionEvent -> {
+                String arg = branchField.getText();
+                try {
+                    String sql = "SELECT rental_id, street, city, zip " +
+                            "FROM Property " +
+                            "WHERE supervisor_id IN (" +
+                            "SELECT emp_id " +
+                            "FROM Employee " +
+                            "WHERE branch_id = " + branchField.getText() +
+                            ")";
+                    Statement stmt = UserInterface.this.connection.createStatement();
+                    ResultSet result = stmt.executeQuery(sql);
+                    while (result.next()) {
+                        resultArea.setText(result.getString("rental_id"));
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Could not initialize procPanel[0]!");
+                    System.out.println(e);
+                    System.exit(1);
+                }
+            });
+            subpanel1.add(submitBtn);
+        }
+    }
+
+
     private void initProcPanel0() {
         this.procPanel[0] = new JPanel();
         this.procPanel[0].setLayout(new BorderLayout());
@@ -104,7 +154,8 @@ public class UserInterface extends JFrame implements ActionListener {
         }
 
         // init panels
-        initProcPanel0();
+        //initProcPanel0();
+        this.procPanel[0] = new ProcPanel0();
         for (JPanel panel : this.procPanel) {
             // anything that needs to happen to all panels
         }
