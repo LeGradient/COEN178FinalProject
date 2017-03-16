@@ -55,8 +55,11 @@ public class UserInterface extends JFrame implements ActionListener {
                     String sql = "SELECT name " +
                             "FROM Employee " +
                             "WHERE branch_id = " + branchField.getText();
-                    Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                    String managerName = stmt.executeQuery(sql).getString("name");
+                    Statement stmt = UserInterface.this.connection.createStatement();
+                    ResultSet managerResult = stmt.executeQuery(sql);
+                    managerResult.next();
+                    String managerName = managerResult.getString("name");
+                    stmt.close();
 
                     // send query
                     sql = "SELECT rental_id, street, city, zip " +
