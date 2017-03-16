@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Ellipse2D;
 import java.sql.*;
 import javax.swing.*;
 
@@ -609,14 +610,15 @@ public class UserInterface extends JFrame implements ActionListener {
                 // get manager name
                 try {
                     String sql = "SELECT AVG(monthly_rent) " +
-                            "INTO var_avgrent_leased " +
                             "FROM Property " +
                             "WHERE status = 'leased' " +
-                            "AND city = " + cityField.getText();
+                            "AND city = " + "'" + cityField.getText() + "'";
                     Statement stmt = UserInterface.this.connection.createStatement();
-                    ResultSet managerResult = stmt.executeQuery(sql);
-                    leasedRent.setText("Leased Rent: " + managerResult.getString(0));
-                } catch (SQLException e) {
+                    ResultSet result = stmt.executeQuery(sql);
+                    if(result.next()) {
+                        leasedRent.setText("Leased Rent: " + result.getString(0));
+                    }
+                    } catch (SQLException e) {
                     System.out.println(e);
                     System.out.println("Couldn't get manager name!");
                 }
@@ -625,14 +627,16 @@ public class UserInterface extends JFrame implements ActionListener {
                 try {
                     // send query
                     String sql = "SELECT AVG(monthly_rent) " +
-                            "INTO var_avgrent_available " +
-                            "FROM Property\n" +
+                            "FROM Property " +
                             "WHERE status = 'available' " +
-                            "AND city = " + cityField.getText();
+                            "AND city = " + "'" + cityField.getText() +"'";
                     Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                     ResultSet result = stmt.executeQuery(sql);
-                    availableRent.setText("Available Rent: " + result.getString(0));
+                    if(result.next()) {
+                        availableRent.setText("Available Rent: " + result.getString(0));
+                    }
 
+                    rentAverage.setText("Average:" + ((Double.parseDouble(leasedRent.getText()) + Double.parseDouble(availableRent.getText()))/2));
                     // get column names
                     int colCount = result.getMetaData().getColumnCount();
                     String[] columns = new String[colCount];
