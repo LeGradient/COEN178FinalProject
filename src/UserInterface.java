@@ -54,7 +54,7 @@ public class UserInterface extends JFrame implements ActionListener {
                     Statement stmt = UserInterface.this.connection.createStatement();
                     ResultSet result = stmt.executeQuery(sql);
                     String columns = "";
-                    for (int i = 0; i < result.getMetaData().getColumnCount(); i++){
+                    for (int i = 1; i <= result.getMetaData().getColumnCount(); i++){
                         columns += result.getMetaData().getColumnName(i);
                     }
                     resultArea.setText(columns + "\n");
