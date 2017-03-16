@@ -128,8 +128,6 @@ public class UserInterface extends JFrame implements ActionListener {
 
         public ProcPanel1() {
             // initialize results area
-
-            JPanel resultsPanel = new JPanel(new BorderLayout());
             try {
                 // send query
                 String sql = "SELECT " +
@@ -169,7 +167,7 @@ public class UserInterface extends JFrame implements ActionListener {
                 this.revalidate();
                 this.repaint();
             } catch (SQLException e) {
-                System.out.println("Could not initialize procPanel[0]!");
+                System.out.println("Could not initialize procPanel[1]!");
                 System.out.println(e);
                 System.exit(1);
             }
@@ -218,11 +216,8 @@ public class UserInterface extends JFrame implements ActionListener {
         // init panels
         this.procPanel[0] = new ProcPanel0();
         this.procPanel[1] = new ProcPanel1();
-        for (JPanel panel : this.procPanel) {
-            // anything that needs to happen to all panels
-        }
 
-        this.setSize(1400, 600);
+        this.setSize(1200, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -235,8 +230,10 @@ public class UserInterface extends JFrame implements ActionListener {
         if (this.indexPrev != -1) {
             this.getContentPane().remove(procPanel[this.indexPrev]);
         }
+        this.indexPrev = index;
         this.getContentPane().add(procPanel[index], BorderLayout.CENTER);
         this.getContentPane().revalidate();
+        this.getContentPane().repaint();
     }
 
 
