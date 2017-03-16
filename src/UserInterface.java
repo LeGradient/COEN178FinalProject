@@ -48,9 +48,11 @@ public class UserInterface extends JFrame implements ActionListener {
             menuPanel.add(submitBtn);
 
             // initialize results area
-            JPanel resultsPanel = new JPanel(new GridLayout(3, 1));
-            resultsPanel.add(resultsBranchLabel);
-            resultsPanel.add(resultsManagerLabel);
+            JPanel resultsPanel = new JPanel(new GridLayout(2, 1));
+            JPanel labelPanel = new JPanel(new FlowLayout());
+            labelPanel.add(resultsBranchLabel);
+            labelPanel.add(resultsManagerLabel);
+            resultsPanel.add(labelPanel);
             this.add(resultsPanel, BorderLayout.CENTER);
 
             submitBtn.addActionListener(actionEvent -> {
