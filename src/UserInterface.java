@@ -50,27 +50,37 @@ public class UserInterface extends JFrame implements ActionListener {
             resultsPanel.add(resultsManagerLabel);
 
             submitBtn.addActionListener(actionEvent -> {
+                this.resultsBranchLabel.setText("Branch ID: " + branchField.getText());
+
+                // get manager name
                 try {
-                    // get manager name
                     String sql = "SELECT name " +
                             "FROM Employee " +
                             "WHERE branch_id = " + branchField.getText() + " " +
                             "AND job = 'manager'";
                     Statement stmt = UserInterface.this.connection.createStatement();
                     ResultSet managerResult = stmt.executeQuery(sql);
-                    managerResult.next();
-                    String managerName = managerResult.getString("name");
-                    stmt.close();
+                    String managerName = "";
+                    if (managerResult.next()) {
+                        managerName = managerResult.getString("name");
+                    }
+                    this.resultsManagerLabel.setText("Manager: " + managerName);
+                } catch (SQLException e) {
+                    System.out.println(e);
+                    System.out.println("Couldn't get manager name!");
+                }
 
+                // get available properties
+                try {
                     // send query
-                    sql = "SELECT rental_id, street, city, zip " +
+                    String sql = "SELECT rental_id, street, city, zip " +
                                 "FROM Property " +
                                 "WHERE supervisor_id IN (" +
                                     "SELECT emp_id " +
                                     "FROM Employee " +
                                     "WHERE branch_id = " + branchField.getText() +
                                 ")";
-                    stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                    Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                     ResultSet result = stmt.executeQuery(sql);
 
                     // get column names
@@ -91,8 +101,7 @@ public class UserInterface extends JFrame implements ActionListener {
                             data[i][j] = result.getString(j + 1);
                         }
                     }
-                    this.resultsBranchLabel.setText("Branch ID: " + branchField.getText());
-                    this.resultsManagerLabel.setText("Manager: " + managerName);
+
                     this.remove(this.resultsPane);
                     this.resultsPane = new JScrollPane(new JTable(data, columns));
                     resultsPanel.add(this.resultsPane);
