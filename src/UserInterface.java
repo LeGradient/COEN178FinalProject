@@ -71,6 +71,8 @@ public class UserInterface extends JFrame implements ActionListener {
                         }
                     }
                     this.add(new JTable(data, columns), BorderLayout.CENTER);
+                    this.revalidate();
+                    this.repaint();
                 } catch (SQLException e) {
                     System.out.println("Could not initialize procPanel[0]!");
                     System.out.println(e);
