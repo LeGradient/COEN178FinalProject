@@ -269,7 +269,7 @@ public class UserInterface extends JFrame implements ActionListener {
         private JScrollPane resultsPane = new JScrollPane();
         
         // extra information to be displayed above the table
-        private JLabel resultsOwnerLabel = new JLabel("Owner");
+        //private JLabel resultsOwnerLabel = new JLabel("Owner");
 
         public ProcPanel3() {
             this.setLayout(new BorderLayout());
@@ -320,9 +320,9 @@ public class UserInterface extends JFrame implements ActionListener {
 
             // initialize results area
             JPanel resultsPanel = new JPanel(new BorderLayout());
-            JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-            labelPanel.add(resultsOwnerLabel);
-            resultsPanel.add(labelPanel, BorderLayout.PAGE_START);
+            //JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+            //labelPanel.add(resultsOwnerLabel);
+            //resultsPanel.add(labelPanel, BorderLayout.PAGE_START);
             this.add(resultsPanel, BorderLayout.CENTER);
 
             submitBtn.addActionListener(actionEvent -> {
@@ -413,7 +413,7 @@ public class UserInterface extends JFrame implements ActionListener {
 
                 this.remove(this.resultsPane);
                 this.resultsPane = new JScrollPane(new JTable(data, columns));
-                this.add(this.resultsPane, BorderLayout.CENTER);
+                this.add(this.resultsPane);
                 this.revalidate();
                 this.repaint();
             } catch (SQLException e) {
@@ -478,25 +478,25 @@ public class UserInterface extends JFrame implements ActionListener {
             JButton submitBtn = new JButton("Create Lease");
             submitBtn.addActionListener(actionEvent -> {
                 // convert dates to SQL format
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
-                java.util.Date startDate, endDate;
-                java.sql.Date sqlStartDate, sqlEndDate;
-                try {
-                    startDate = dateFormat.parse(startDateField.getText());
-                    sqlStartDate = new java.sql.Date(startDate.getTime());
-                } catch (ParseException e) {
-                    System.out.println("Couldn't parse startDate!");
-                    System.out.println(e);
-                    return;
-                }
-                try {
-                    endDate = dateFormat.parse(endDateField.getText());
-                    sqlEndDate = new java.sql.Date(endDate.getTime());
-                } catch (ParseException e) {
-                    System.out.println("Couldn't parse endDate!");
-                    System.out.println(e);
-                    return;
-                }
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
+//                java.util.Date startDate, endDate;
+//                java.sql.Date sqlStartDate, sqlEndDate;
+//                try {
+//                    startDate = dateFormat.parse(startDateField.getText());
+//                    sqlStartDate = new java.sql.Date(startDate.getTime());
+//                } catch (ParseException e) {
+//                    System.out.println("Couldn't parse startDate!");
+//                    System.out.println(e);
+//                    return;
+//                }
+//                try {
+//                    endDate = dateFormat.parse(endDateField.getText());
+//                    sqlEndDate = new java.sql.Date(endDate.getTime());
+//                } catch (ParseException e) {
+//                    System.out.println("Couldn't parse endDate!");
+//                    System.out.println(e);
+//                    return;
+//                }
 
                 // fetch status and monthly_rent
                 String status;
@@ -504,7 +504,7 @@ public class UserInterface extends JFrame implements ActionListener {
                 double rent;
                 String selectSQL = "SELECT status, monthly_rent " +
                         "FROM Property " +
-                        "WHERE rental_id = '" + leaseIdField.getText() + "'";
+                        "WHERE rental_id = '" + rentalIdField.getText() + "'";
                 try {
                     Statement stmt = UserInterface.this.connection.createStatement();
                     ResultSet result = stmt.executeQuery(selectSQL);
@@ -519,7 +519,7 @@ public class UserInterface extends JFrame implements ActionListener {
                         statusLabel.setText("Property already rented, cannot create lease!");
                         return;
                     }
-                    rent = monthly_rent * (endDate.getMonth() - startDate.getMonth());
+                    rent = 10000;//monthly_rent * (endDate.getMonth() - startDate.getMonth());
                 } catch (SQLException e) {
                     System.out.println("Couldn't query for status and monthly_rent!");
                     System.out.println(e);
@@ -533,9 +533,9 @@ public class UserInterface extends JFrame implements ActionListener {
                         renterIdField.getText() + ", " +
                         "'" + friendNameField.getText() + "', " +
                         "'" + friendPhoneField.getText() + "', " +
-                        "'" + sqlStartDate.toString() + "', " +
-                        "'" + sqlEndDate.toString() + "', " +
-                        rent + ", " +
+                        "'" + startDateField.getText() + "', " +
+                        "'" + endDateField.getText() + "', " +
+                        "MONTHS_BETWEEN('" + endDateField.getText() + "', '" + startDateField.getText() + "') * " + monthly_rent + ", " +
                         monthly_rent + ")";
                 try {
                     Statement stmt = UserInterface.this.connection.createStatement();
@@ -754,7 +754,7 @@ public class UserInterface extends JFrame implements ActionListener {
                     Statement stmt = UserInterface.this.connection.createStatement();
                     ResultSet result = stmt.executeQuery(sql);
                     if(result.next()) {
-                        leasedRent.setText("Leased Rent: " + result.getDouble(1));
+                        leasedRent.setText("Leased Rent Average: " + result.getDouble(1));
                         sum += result.getDouble(1);
                     }
                     } catch (SQLException e) {
@@ -772,32 +772,32 @@ public class UserInterface extends JFrame implements ActionListener {
                     Statement stmt = UserInterface.this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                     ResultSet result = stmt.executeQuery(sql);
                     if(result.next()) {
-                        availableRent.setText("Available Rent: " + result.getDouble(1));
+                        availableRent.setText("Available Rent Average: " + result.getDouble(1));
                         sum += result.getDouble(1);
                     }
 
-                    rentAverage.setText("Average:" + (sum/2));
+                    rentAverage.setText("Total Average: " + (sum/2));
                     sum = 0.0;
                     // get column names
-                    int colCount = result.getMetaData().getColumnCount();
-                    String[] columns = new String[colCount];
-                    for (int i = 0; i < result.getMetaData().getColumnCount(); i++) {
-                        columns[i] = result.getMetaData().getColumnName(i + 1);
-                    }
-
-                    // get data
-                    result.last();
-                    int rowCount = result.getRow();
-                    result.beforeFirst();
-                    String[][] data = new String[rowCount][colCount];
-                    for (int i = 0; i < rowCount; i++) {
-                        result.next();
-                        for (int j = 0; j < colCount; j++) {
-                            data[i][j] = result.getString(j + 1);
-                        }
-                    }
+//                    int colCount = result.getMetaData().getColumnCount();
+//                    String[] columns = new String[colCount];
+//                    for (int i = 0; i < result.getMetaData().getColumnCount(); i++) {
+//                        columns[i] = result.getMetaData().getColumnName(i + 1);
+//                    }
+//
+//                    // get data
+//                    result.last();
+//                    int rowCount = result.getRow();
+//                    result.beforeFirst();
+//                    String[][] data = new String[rowCount][colCount];
+//                    for (int i = 0; i < rowCount; i++) {
+//                        result.next();
+//                        for (int j = 0; j < colCount; j++) {
+//                            data[i][j] = result.getString(j + 1);
+//                        }
+//                    }
                     resultsPanel.remove(this.resultsPane);
-                    this.resultsPane = new JScrollPane(new JTable(data, columns));
+//                    this.resultsPane = new JScrollPane(new JTable(data, columns));
                     resultsPanel.add(this.resultsPane, BorderLayout.CENTER);
                     this.revalidate();
                     this.repaint();
@@ -911,6 +911,7 @@ public class UserInterface extends JFrame implements ActionListener {
         this.procPanel[2] = new ProcPanel2();
         this.procPanel[3] = new ProcPanel3();
         this.procPanel[4] = new ProcPanel4();
+        this.procPanel[5] = new ProcPanel5();
         this.procPanel[6] = new ProcPanel6();
         this.procPanel[7] = new ProcPanel7();
         this.procPanel[8] = new ProcPanel8();
